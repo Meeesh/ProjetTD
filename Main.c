@@ -3,6 +3,9 @@
 //************
 #include <p18lf46k22.h>
 #include "head.h"
+#include "xlcd.h"
+#include "boutons.h"
+#include "affi.h"
 
 
 
@@ -25,14 +28,6 @@
 //* DEFINE *
 //**********
 
-
-
-//**********************
-//* VARIABLES GLOBALES *
-//**********************
-enum {NUM, ANA};
-enum {OUT, IN};
-enum {OFF, ON};
 
 //**************
 //* PROTOTYPES *
@@ -69,7 +64,14 @@ void main(void)
 	
 		//ETAT REPOS DES PINS 	(PORT)
 		
-		
+	initLCD();
+        initBout();
+
+        OpenXLCD(FOUR_BIT & LINES_5X7);
+        while(BusyXLCD());
+        putrsXLCD("Hullo");
+        while(BusyXLCD());
+        SetDDRamAddr(0x04);
 		
 		
 	//BOUCLE PRINCIPALE
