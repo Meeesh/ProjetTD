@@ -66,8 +66,8 @@
 //#define STACK_USE_UART					// Application demo using UART for IP address display and stack configuration
 //#define STACK_USE_UART2TCP_BRIDGE		// UART to TCP Bridge application example
 //#define STACK_USE_IP_GLEANING
-//#define STACK_USE_ICMP_SERVER			// Ping query and response capability
-//#define STACK_USE_ICMP_CLIENT			// Ping transmission capability
+#define STACK_USE_ICMP_SERVER			// Ping query and response capability
+#define STACK_USE_ICMP_CLIENT			// Ping transmission capability
 //#define STACK_USE_HTTP2_SERVER			// New HTTP server with POST, Cookies, Authentication, etc.
 //#define STACK_USE_SSL_SERVER			// SSL server socket support (Requires SW300052)
 //#define STACK_USE_SSL_CLIENT			// SSL client socket support (Requires SW300052)
@@ -150,7 +150,8 @@
  *   To clear EEPROM, hold BUTTON0, reset the board, and continue
  *   holding until the LEDs flash.  Release, and reset again.
  */
-#define MY_DEFAULT_HOST_NAME			"Mon Salon"
+//#define MY_DEFAULT_HOST_NAME			"Mon Salon"
+#define MY_DEFAULT_HOST_NAME			"CarteMonit"
 
 #define MY_DEFAULT_MAC_BYTE1            (0x00)	// Use the default of 00-04-A3-00-00-01
 #define MY_DEFAULT_MAC_BYTE2            (0x04)	// if using an ENCX24J600, MRF24WB0M, or
@@ -160,9 +161,9 @@
 #define MY_DEFAULT_MAC_BYTE6            (0x01)	// address instead.
 
 #define MY_DEFAULT_IP_ADDR_BYTE1        (10ul)	//adresse ip : 169.254.1.1
-#define MY_DEFAULT_IP_ADDR_BYTE2        (1ul)
+#define MY_DEFAULT_IP_ADDR_BYTE2        (101ul)
 #define MY_DEFAULT_IP_ADDR_BYTE3        (11ul)
-#define MY_DEFAULT_IP_ADDR_BYTE4        (42ul)
+#define MY_DEFAULT_IP_ADDR_BYTE4        (45ul)
 
 #define MY_DEFAULT_MASK_BYTE1           (255ul)	//masque 255.255.0.0
 #define MY_DEFAULT_MASK_BYTE2           (255ul)
@@ -170,14 +171,14 @@
 #define MY_DEFAULT_MASK_BYTE4           (0ul)
 
 #define MY_DEFAULT_GATE_BYTE1           (10ul)
-#define MY_DEFAULT_GATE_BYTE2           (1ul)
+#define MY_DEFAULT_GATE_BYTE2           (101ul)
 #define MY_DEFAULT_GATE_BYTE3           (11ul)
 #define MY_DEFAULT_GATE_BYTE4           (254ul)
 
 #define MY_DEFAULT_PRIMARY_DNS_BYTE1	(10ul)
 #define MY_DEFAULT_PRIMARY_DNS_BYTE2	(1ul)
-#define MY_DEFAULT_PRIMARY_DNS_BYTE3	(11ul)
-#define MY_DEFAULT_PRIMARY_DNS_BYTE4	(254ul)
+#define MY_DEFAULT_PRIMARY_DNS_BYTE3	(1ul)
+#define MY_DEFAULT_PRIMARY_DNS_BYTE4	(22ul)
 
 #define MY_DEFAULT_SECONDARY_DNS_BYTE1	(0ul)
 #define MY_DEFAULT_SECONDARY_DNS_BYTE2	(0ul)
@@ -218,7 +219,7 @@
  *   based on module selections above.  If your custom module
  *   requires them otherwise, enable them here.
  */
-//#define STACK_USE_TCP
+#define STACK_USE_TCP
 //#define STACK_USE_UDP
 
 /* Client Mode Configuration
@@ -243,7 +244,7 @@
 	// Define names of socket types
 	#define TCP_SOCKET_TYPES
 		#define TCP_PURPOSE_GENERIC_TCP_CLIENT 0
-		#define TCP_PURPOSE_GENERIC_TCP_SERVER 1
+		#define TCP_PURPOSE_GENERIC_TCP_SERVER 1 //Mettre dans le 4eme argument de TCPOpen
 		#define TCP_PURPOSE_TELNET 2
 		#define TCP_PURPOSE_FTP_COMMAND 3
 		#define TCP_PURPOSE_FTP_DATA 4
