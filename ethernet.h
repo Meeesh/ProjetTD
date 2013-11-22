@@ -1,23 +1,14 @@
-/* 
- * File:   ethernet.h
- * Author: etu18666
- *
- * Created on 19 novembre 2013, 14:20
- */
-
 #ifndef ETHERNET_H
 #define	ETHERNET_H
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+#include "ETHERNET/TCPIP Stack/TCPIP.h"
+#include "ETHERNET/TCPIPConfig.h"
+#include "ETHERNET/HardwareProfile.h"
+//#include "ETHERNET/TCPIP Stack/Tick.h"
+#include "ETHERNET/TCPIP Stack/StackTsk.h"
 
-
-
-
-#ifdef	__cplusplus
-}
-#endif
+void initEthernet(void);
+static void InitAppConfig(void);
 
 #endif	/* ETHERNET_H */
 
