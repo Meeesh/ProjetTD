@@ -181,7 +181,7 @@
 		#define GetInstructionClock()	(GetSystemClock()/4)
 		#define GetPeripheralClock()	GetInstructionClock()
 	#else
-		#define GetSystemClock()		(4000000ul)      // frequence interne en Hz
+		#define GetSystemClock()		(16000000ul)      // frequence interne en Hz
 		#define GetInstructionClock()	(GetSystemClock()/4)
 		#define GetPeripheralClock()	GetInstructionClock()
 	#endif
@@ -2671,7 +2671,9 @@
 // Define your own board hardware profile here
     //définition de la carte
     //Pins CS,SCK,SDO1,SDI1, registres du SPI interface du périphérique série(ENC28J60)
-    #define GetSystemClock()        (16000000ul)
+		#define GetSystemClock()		(16000000ul)      // frequence interne en Hz
+		#define GetInstructionClock()	(GetSystemClock()/4)
+		#define GetPeripheralClock()	GetInstructionClock()
 	// ENC28J60 I/O pins
     #define ENC_RST_TRIS		(TRISBbits.TRISB5) //PAS BESOIN
     #define ENC_RST_IO			(LATBbits.LATB5)
