@@ -45,7 +45,7 @@ void initLCD(void)				//permet de placer les pins en sortie
 
      OpenXLCD(FOUR_BIT & LINES_5X7);
      while(BusyXLCD());
-     putsXLCD("HELLO !");
+     putrsXLCD("HELLO !");
      while(BusyXLCD());
      SetDDRamAddr(0x40);
      
