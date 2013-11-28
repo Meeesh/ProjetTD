@@ -3,7 +3,11 @@
 // INCLUDE
 
 #include "TIOS.h"
-
+#include "xlcd.h"
+#include "head.h"
+#include "affi.h"
+#include "boutons.h"
+#include "delays.h"
 
 // Mes variables globales
 
@@ -15,8 +19,6 @@ unsigned char IDCB_LED = 0; // mémorisation de l'identificateur créé lors de l'e
 //********************************************************
 // Fonctions dont on passe les adresses à TIOS 
 
-void Clignote_LED(void);
-
 
 //****************** fonction principale *****************
 int main (void)
@@ -25,7 +27,7 @@ int main (void)
 	TIOSInitialiser();
 
 	// Initialisation des Callbacks
- 	TIOSEnregistrerCB_TIMER(/*pointeur de fonction*/, /*temps d'appel en MS*/
+ 	TIOSEnregistrerCB_TIMER(/*pointeur de fonction*/, /*temps d'appel en MS*/);
  		
  	// Lancement OS (Boucle infinie)
 	TIOSStart();
