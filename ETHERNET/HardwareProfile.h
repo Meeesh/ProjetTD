@@ -2669,13 +2669,8 @@
 
 #elif defined(YOUR_BOARD)
 // Define your own board hardware profile here
-    //définition de la carte
-    //Pins CS,SCK,SDO1,SDI1, registres du SPI interface du périphérique série(ENC28J60)
-		#define GetSystemClock()		(16000000ul)      // frequence interne en Hz
-		#define GetInstructionClock()	(GetSystemClock()/4)
-		#define GetPeripheralClock()	GetInstructionClock()
-	// ENC28J60 I/O pins
-    #define ENC_RST_TRIS		(TRISBbits.TRISB5) //PAS BESOIN
+
+        #define ENC_RST_TRIS		(TRISBbits.TRISB5) //PAS BESOIN
     #define ENC_RST_IO			(LATBbits.LATB5)
     #define ENC_CS_TRIS			(TRISAbits.TRISA5)	// Uncomment this line to use the ENC28J60 Ethernet controller or comment it out to use some other network controller
     #define ENC_CS_IO			(LATAbits.LATA5) //sur RA5
