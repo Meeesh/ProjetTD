@@ -37,10 +37,12 @@
 //DEFINE
 
 
-//VARIABLES GLOBALES
-APP_CONFIG AppConfig;
-
-
+//VARIABLES GLOBALES ETHERNET
+APP_CONFIG AppConfig; //Structure déclarée dans StackTsk.h -> Sans ca pas de compilation
+BYTE DonneEnvoi[15]="Hello world\0"; //Données à envoyer en utilisant TCPPutArray
+static TCP_SOCKET skt = INVALID_SOCKET; //Initialisation du socket TCP
+BOOL connectTCP=0;
+WORD verifPut=0;
 
 //FONCTIONS INTERNES
 void HAUTEPRIORITEInterrupt(void);
@@ -97,9 +99,30 @@ void main()
     putrsXLCD("Alexandre");
     while(BusyXLCD());
 
+    //Module ethernet
+    ENC_CS_TRIS=0; //Configuration de la pile
+    ENC_CS_IO=1; //Configuration de la pile
+    TickInit(); //Initialisation de l'horloge de la pile TCPIP var utiliser le TMR0
+    //skt = TCPOpen((DWORD)(IP_ADDR)"10.1.1.3",TCP_OPEN_IP_ADDRESS,80,TCP_PURPOSE_DEFAULT); //Ouverture d'un nouveau socket CLIENT ici TCP sur une certaine IP
+    //Ou alors
+    skt = TCPOpen((DWORD)(IP_ADDR)"10.1.1.3",TCP_OPEN_IP_ADDRESS,80,TCP_PURPOSE_GENERIC_TCP_CLIENT);
+    StackInit(); //Initialisation de la pile
+
     while(1)
     {
-
+        StackTask();
+        StackApplications();
+        ////ApplicationTask(); //Notre application
+        connectTCP = TCPIsConnected(skt); //Vérifie si on a une connexion établie avec le noeud suivant
+        if(connectTCP == TRUE){
+            verifPut TCPIsPutReady(skt); //Retourne le nombre d'octets qui peuvent être envoyés dans le tampon TX TCP
+            if(verifPut == 0){
+                StackTask();
+                StackApplications();
+                verifPut TCPIsPutReady(skt);
+                TCPPutArray(skt, DonneEnvoi, 15);
+            }
+        }
     }
 }
 
@@ -125,7 +148,7 @@ void HAUTEPRIORITEInterrupt(void)
 #pragma interrupt BASSEPRIORITEInterrupt
 void BASSEPRIORITEInterrupt(void)
 {
-
+    TickUpdate();
 }
 
 void DelayFor18TCY(void){
