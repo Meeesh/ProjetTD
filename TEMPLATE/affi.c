@@ -4,6 +4,8 @@
 #include "head.h"
 	//attention les trois premieres fonction ne peuvent pas se mettre dans se fichier mais dans le main (CTRL-X CTRL-V)
 	//ca fonctionne ???
+	//
+	//reste a voir, j'arrive a compiler en cc18 avec les fonctions dans un autre fichier
 	void DelayFor18TCY(void)
 {
 	Nop();

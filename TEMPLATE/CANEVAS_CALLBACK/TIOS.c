@@ -1,6 +1,11 @@
 // OS
 
 #include "TIOS.h"
+#include "xlcd.h"
+#include "head.h"
+#include "affi.h"
+#include "boutons.h"
+#include "delays.h"
 
 
 //Variables pour CallBack Chrono

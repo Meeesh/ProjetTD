@@ -13,7 +13,7 @@ void initBout()
 	TRISCbits.TRISC0 = IN;
 	TRISCbits.TRISC1 = IN;
 
-        INTCONbits.INT0IE = 1;
-        BT_FL = 0;
-        INTCON2bits.INTEDG0 = 0;
+    INTCONbits.INT0IE = 1;
+    BT_FL = 0;
+    INTCON2bits.INTEDG0 = 0;
 }
