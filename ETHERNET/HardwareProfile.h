@@ -68,7 +68,7 @@
 //#define PIC32_USB_SK_DM320003_2			// PIC32MX795F512L USB Starter Kit II (for purposes of TCP/IP, defining this macro is the same as defining PIC32_GP_SK_DM320001 or PIC32_USB_DM320003_1)
 //#define PIC32_ENET_SK_DM320004		// PIC32MX795F512L Ethernet Starter Kit board with embedded Ethernet controller
 //#define PIC24FJ256DA210_DEV_BOARD	// PIC24FJ256DA210 Development Board (Graphics)
-#define YOUR_BOARD			//mon board
+#define YOUR_BOARD			//mon board car c'est ma carte !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 // If no hardware profiles are defined, assume that we are using 
 // a Microchip demo board and try to auto-select the correct profile
@@ -181,7 +181,7 @@
 		#define GetInstructionClock()	(GetSystemClock()/4)
 		#define GetPeripheralClock()	GetInstructionClock()
 	#else
-		#define GetSystemClock()		(16000000ul)      // frequence interne en Hz
+		#define GetSystemClock()		(16000000ul)      // frequence interne à 16MHz donc 16000000Hz!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		#define GetInstructionClock()	(GetSystemClock()/4)
 		#define GetPeripheralClock()	GetInstructionClock()
 	#endif
@@ -284,7 +284,7 @@
 //	#define ENC100_SPICON1bits		(SSP1CON1bits)
 //	#define ENC100_SPICON2			(SSP1CON2)
 
-	// ENC28J60 I/O pins  
+	// ENC28J60 I/O pins  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //	#define ENC_RST_TRIS		(TRISBbits.TRISB5)
 //	#define ENC_RST_IO			(LATBbits.LATB5)
 //	#define ENC_CS_TRIS			(TRISAbits.TRISA5)	// Uncomment this line to use the ENC28J60 Ethernet controller or comment it out to use some other network controller
@@ -2667,23 +2667,20 @@
 //	#define WF_SPI_IF			(IFS0bits.SPI1IF)
 
 
-#elif defined(YOUR_BOARD)
+#elif defined(YOUR_BOARD)	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // Define your own board hardware profile here
-
-        #define ENC_RST_TRIS		(TRISBbits.TRISB5) //PAS BESOIN
-    #define ENC_RST_IO			(LATBbits.LATB5)
-    #define ENC_CS_TRIS			(TRISAbits.TRISA5)	// Uncomment this line to use the ENC28J60 Ethernet controller or comment it out to use some other network controller
-    #define ENC_CS_IO			(LATAbits.LATA5) //sur RA5
-    #define ENC_SCK_TRIS		(TRISCbits.TRISC3)
-    #define ENC_SDI_TRIS		(TRISCbits.TRISC4)
-    #define ENC_SDO_TRIS		(TRISCbits.TRISC5)
-    #define ENC_SPI_IF			(PIR1bits.SSP1IF)
-    #define ENC_SSPBUF			(SSP1BUF)
-    #define ENC_SPISTAT			(SSP1STAT)
-    #define ENC_SPISTATbits		(SSP1STATbits)
-    #define ENC_SPICON1			(SSP1CON1)
-    #define ENC_SPICON1bits		(SSP1CON1bits)
-    #define ENC_SPICON2			(SSP1CON2)
+	#define ENC_CS_TRIS			(TRISAbits.TRISA5)		//CS=RA5; SCK=RC3; SDO1=RC5; SDI1=RC4
+	#define ENC_CS_IO			(LATAbits.LATA5)	
+	#define ENC_SCK_TRIS		(TRISCbits.TRISC3)
+	#define ENC_SDI_TRIS		(TRISCbits.TRISC4)
+	#define ENC_SDO_TRIS		(TRISCbits.TRISC5)
+	#define ENC_SPI_IF			(PIR1bits.SSP1IF)
+	#define ENC_SSPBUF			(SSP1BUF)
+	#define ENC_SPISTAT			(SSP1STAT)
+	#define ENC_SPISTATbits		(SSP1STATbits)
+	#define ENC_SPICON1			(SSP1CON1)
+	#define ENC_SPICON1bits		(SSP1CON1bits)
+	#define ENC_SPICON2			(SSP1CON2)
 
 #else
 	#error "Hardware profile not defined.  See available profiles in HardwareProfile.h and modify or create one."

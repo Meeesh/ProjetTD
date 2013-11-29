@@ -1,4 +1,3 @@
-//encore une fois je l'ai créé avec le programme "TCPIP configuration wizard"
 
 /*********************************************************************
  *
@@ -63,7 +62,7 @@
  *   Uncomment or comment the following lines to enable or
  *   disabled the following high-level application modules.
  */
-//#define STACK_USE_UART					// Application demo using UART for IP address display and stack configuration
+////#define STACK_USE_UART					// Application demo using UART for IP address display and stack configuration
 //#define STACK_USE_UART2TCP_BRIDGE		// UART to TCP Bridge application example
 //#define STACK_USE_IP_GLEANING
 #define STACK_USE_ICMP_SERVER			// Ping query and response capability
@@ -71,9 +70,9 @@
 //#define STACK_USE_HTTP2_SERVER			// New HTTP server with POST, Cookies, Authentication, etc.
 //#define STACK_USE_SSL_SERVER			// SSL server socket support (Requires SW300052)
 //#define STACK_USE_SSL_CLIENT			// SSL client socket support (Requires SW300052)
-//#define STACK_USE_AUTO_IP               // Dynamic link-layer IP address automatic configuration protocol
-//#define STACK_USE_DHCP_CLIENT			// Dynamic Host Configuration Protocol client for obtaining IP address and other parameters
-//#define STACK_USE_DHCP_SERVER			// Single host DHCP server
+////#define STACK_USE_AUTO_IP               // Dynamic link-layer IP address automatic configuration protocol
+////#define STACK_USE_DHCP_CLIENT			// Dynamic Host Configuration Protocol client for obtaining IP address and other parameters
+////#define STACK_USE_DHCP_SERVER			// Single host DHCP server
 //#define STACK_USE_FTP_SERVER			// File Transfer Protocol (old)
 //#define STACK_USE_SMTP_CLIENT			// Simple Mail Transfer Protocol for sending email
 //#define STACK_USE_SNMP_SERVER			// Simple Network Management Protocol v2C Community Agent
@@ -83,13 +82,13 @@
 //#define STACK_USE_GENERIC_TCP_SERVER_EXAMPLE	// ToUpper server example in GenericTCPServer.c
 //#define STACK_USE_TELNET_SERVER			// Telnet server
 //#define STACK_USE_ANNOUNCE				// Microchip Embedded Ethernet Device Discoverer server/client
-//#define STACK_USE_DNS					// Domain Name Service Client for resolving hostname strings to IP addresses
+////#define STACK_USE_DNS					// Domain Name Service Client for resolving hostname strings to IP addresses
 //#define STACK_USE_DNS_SERVER			// Domain Name Service Server for redirection to the local device
-//#define STACK_USE_NBNS					// NetBIOS Name Service Server for repsonding to NBNS hostname broadcast queries
-//#define STACK_USE_REBOOT_SERVER			// Module for resetting this PIC remotely.  Primarily useful for a Bootloader.
-//#define STACK_USE_SNTP_CLIENT			// Simple Network Time Protocol for obtaining current date/time from Internet
+////#define STACK_USE_NBNS					// NetBIOS Name Service Server for repsonding to NBNS hostname broadcast queries
+////#define STACK_USE_REBOOT_SERVER			// Module for resetting this PIC remotely.  Primarily useful for a Bootloader.
+////#define STACK_USE_SNTP_CLIENT			// Simple Network Time Protocol for obtaining current date/time from Internet
 //#define STACK_USE_UDP_PERFORMANCE_TEST	// Module for testing UDP TX performance characteristics.  NOTE: Enabling this will cause a huge amount of UDP broadcast packets to flood your network on the discard port.  Use care when enabling this on production networks, especially with VPNs (could tunnel broadcast traffic across a limited bandwidth connection).
-//#define STACK_USE_TCP_PERFORMANCE_TEST	// Module for testing TCP TX performance characteristics
+////#define STACK_USE_TCP_PERFORMANCE_TEST	// Module for testing TCP TX performance characteristics
 //#define STACK_USE_DYNAMICDNS_CLIENT		// Dynamic DNS client updater module
 //#define STACK_USE_BERKELEY_API			// Berekely Sockets APIs are available
 //#define STACK_USE_ZEROCONF_LINK_LOCAL	// Zeroconf IPv4 Link-Local Addressing
@@ -150,8 +149,7 @@
  *   To clear EEPROM, hold BUTTON0, reset the board, and continue
  *   holding until the LEDs flash.  Release, and reset again.
  */
-//#define MY_DEFAULT_HOST_NAME			"Mon Salon"
-#define MY_DEFAULT_HOST_NAME			"CarteMonit"
+#define MY_DEFAULT_HOST_NAME			"Mon Salon"
 
 #define MY_DEFAULT_MAC_BYTE1            (0x00)	// Use the default of 00-04-A3-00-00-01
 #define MY_DEFAULT_MAC_BYTE2            (0x04)	// if using an ENCX24J600, MRF24WB0M, or
@@ -160,30 +158,57 @@
 #define MY_DEFAULT_MAC_BYTE5            (0x00)	// internal factory programmed MAC
 #define MY_DEFAULT_MAC_BYTE6            (0x01)	// address instead.
 
-#define MY_DEFAULT_IP_ADDR_BYTE1        (10ul)	//adresse ip : 169.254.1.1
-#define MY_DEFAULT_IP_ADDR_BYTE2        (1ul)
-#define MY_DEFAULT_IP_ADDR_BYTE3        (1ul)
-#define MY_DEFAULT_IP_ADDR_BYTE4        (2ul)
+#define MY_DEFAULT_IP_ADDR_BYTE1        (10ul)	//
+#define MY_DEFAULT_IP_ADDR_BYTE2        (101ul)
+#define MY_DEFAULT_IP_ADDR_BYTE3        (10ul)
+#define MY_DEFAULT_IP_ADDR_BYTE4        (56ul)
 
-#define MY_DEFAULT_MASK_BYTE1           (255ul)	//masque 255.255.0.0
+#define MY_DEFAULT_MASK_BYTE1           (255ul)	//
+#define MY_DEFAULT_MASK_BYTE2           (255ul)
+#define MY_DEFAULT_MASK_BYTE3           (255ul)
+#define MY_DEFAULT_MASK_BYTE4           (0ul)
+
+#define MY_DEFAULT_GATE_BYTE1           (10ul)
+#define MY_DEFAULT_GATE_BYTE2           (101ul)
+#define MY_DEFAULT_GATE_BYTE3           (10ul)
+#define MY_DEFAULT_GATE_BYTE4           (1ul)
+
+#define MY_DEFAULT_PRIMARY_DNS_BYTE1	(10ul)
+#define MY_DEFAULT_PRIMARY_DNS_BYTE2	(101ul)
+#define MY_DEFAULT_PRIMARY_DNS_BYTE3	(10ul)
+#define MY_DEFAULT_PRIMARY_DNS_BYTE4	(1ul)
+
+#define MY_DEFAULT_SECONDARY_DNS_BYTE1	(0ul)
+#define MY_DEFAULT_SECONDARY_DNS_BYTE2	(0ul)
+#define MY_DEFAULT_SECONDARY_DNS_BYTE3	(0ul)
+#define MY_DEFAULT_SECONDARY_DNS_BYTE4	(0ul)
+
+/*
+#define MY_DEFAULT_IP_ADDR_BYTE1        (10ul)	
+#define MY_DEFAULT_IP_ADDR_BYTE2        (1ul)
+#define MY_DEFAULT_IP_ADDR_BYTE3        (11ul)
+#define MY_DEFAULT_IP_ADDR_BYTE4        (42ul)
+
+#define MY_DEFAULT_MASK_BYTE1           (255ul)	
 #define MY_DEFAULT_MASK_BYTE2           (255ul)
 #define MY_DEFAULT_MASK_BYTE3           (255ul)
 #define MY_DEFAULT_MASK_BYTE4           (0ul)
 
 #define MY_DEFAULT_GATE_BYTE1           (10ul)
 #define MY_DEFAULT_GATE_BYTE2           (1ul)
-#define MY_DEFAULT_GATE_BYTE3           (1ul)
-#define MY_DEFAULT_GATE_BYTE4           (1ul)
+#define MY_DEFAULT_GATE_BYTE3           (11ul)
+#define MY_DEFAULT_GATE_BYTE4           (254ul)
 
 #define MY_DEFAULT_PRIMARY_DNS_BYTE1	(10ul)
 #define MY_DEFAULT_PRIMARY_DNS_BYTE2	(1ul)
-#define MY_DEFAULT_PRIMARY_DNS_BYTE3	(1ul)
-#define MY_DEFAULT_PRIMARY_DNS_BYTE4	(252ul)
+#define MY_DEFAULT_PRIMARY_DNS_BYTE3	(11ul)
+#define MY_DEFAULT_PRIMARY_DNS_BYTE4	(254ul)
 
 #define MY_DEFAULT_SECONDARY_DNS_BYTE1	(0ul)
 #define MY_DEFAULT_SECONDARY_DNS_BYTE2	(0ul)
 #define MY_DEFAULT_SECONDARY_DNS_BYTE3	(0ul)
 #define MY_DEFAULT_SECONDARY_DNS_BYTE4	(0ul)
+*/
 
 // =======================================================================
 //   PIC32MX7XX/6XX MAC Layer Options
@@ -219,7 +244,7 @@
  *   based on module selections above.  If your custom module
  *   requires them otherwise, enable them here.
  */
-//#define STACK_USE_TCP
+#define STACK_USE_TCP
 //#define STACK_USE_UDP
 
 /* Client Mode Configuration
