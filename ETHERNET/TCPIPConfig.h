@@ -219,7 +219,7 @@
  *   based on module selections above.  If your custom module
  *   requires them otherwise, enable them here.
  */
-#define STACK_USE_TCP
+//#define STACK_USE_TCP
 //#define STACK_USE_UDP
 
 /* Client Mode Configuration

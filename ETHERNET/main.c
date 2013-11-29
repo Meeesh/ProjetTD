@@ -39,7 +39,7 @@
 
 //VARIABLES GLOBALES ETHERNET
 APP_CONFIG AppConfig; //Structure déclarée dans StackTsk.h -> Sans ca pas de compilation
-BYTE DonneEnvoi[15]="Hello world\0"; //Données à envoyer en utilisant TCPPutArray
+BYTE DonneEnvoi[30]="Hello world\0"; //Données à envoyer en utilisant TCPPutArray
 static TCP_SOCKET skt = INVALID_SOCKET; //Initialisation du socket TCP
 BOOL connectTCP=0;
 WORD verifPut=0;
@@ -105,7 +105,7 @@ void main()
     TickInit(); //Initialisation de l'horloge de la pile TCPIP var utiliser le TMR0
     //skt = TCPOpen((DWORD)(IP_ADDR)"10.1.1.3",TCP_OPEN_IP_ADDRESS,80,TCP_PURPOSE_DEFAULT); //Ouverture d'un nouveau socket CLIENT ici TCP sur une certaine IP
     //Ou alors
-    skt = TCPOpen((DWORD)(IP_ADDR)"10.1.1.3",TCP_OPEN_IP_ADDRESS,80,TCP_PURPOSE_GENERIC_TCP_CLIENT);
+    skt = TCPOpen((DWORD)(IP_ADDR)"10.1.1.3",TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_GENERIC_TCP_CLIENT);
     StackInit(); //Initialisation de la pile
 
     while(1)
@@ -120,7 +120,7 @@ void main()
                 StackTask();
                 StackApplications();
                 verifPut TCPIsPutReady(skt);
-                TCPPutArray(skt, DonneEnvoi, 15);
+                TCPPutArray(skt, DonneEnvoi, 30);
             }
         }
     }
