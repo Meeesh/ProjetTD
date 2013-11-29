@@ -45,6 +45,8 @@ static TCP_SOCKET MonSocket = INVALID_SOCKET; //Initialisation du socket TCP
 WORD nbDonnee=0;
 BOOL connectTCP=0;
 WORD verifPut=0;
+char messageLCD[16] = "Ethernet";
+//char messageLCD[16] = "Initialisation..";
 
 //FONCTIONS INTERNES
 void HAUTEPRIORITEInterrupt(void);
@@ -83,21 +85,24 @@ void titi(void)
 void main()
 {
     OSCCONbits.IRCF=0b111;
-    //LCD
-    ANSELD = 0;
     ANSELA = 0;
+    ANSELB = 0;
+    ANSELC = 0;
+    ANSELD = 0;
+    ANSELE = 0;
+
+    //LCD
     TRISD = 0;
     TRISA = 0;
-    while(BusyXLCD());
     OpenXLCD(FOUR_BIT & LINES_5X7);
     while(BusyXLCD());
     SetDDRamAddr(0x00);
     while(BusyXLCD());
-    putrsXLCD("DESSANDE");
+    putsXLCD(messageLCD);
     while(BusyXLCD());
     SetDDRamAddr(0x40);
     while(BusyXLCD());
-    putrsXLCD("Alexandre");
+    putsXLCD(messageLCD);
     while(BusyXLCD());
 
     //Module ethernet
@@ -111,12 +116,13 @@ void main()
     StackApplications();
 
     //MonSocket = TCPOpen((DWORD)0xC80A650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //Ouverture d'un nouveau socket CLIENT ici TCP sur une certaine IP : 10.101.10.200
-    MonSocket = TCPOpen((DWORD)0x780A650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //ICI 10.101.10.120
 
     while(1)
     {
+        MonSocket = TCPOpen((DWORD)0x4501A8C0,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //ICI 192.168.1.69
         StackTask();
         StackApplications();
+
         connectTCP = TCPIsConnected(MonSocket); //Vérifie si on a une connexion établie avec le noeud suivant
         if(connectTCP == TRUE){
             verifPut = TCPIsPutReady(MonSocket); //Vérifie si le buffer d'envoi est OK. Si renvoie 0 il faut essayer de nettoyer avant
@@ -132,25 +138,12 @@ void main()
     }
 }
 
-
-// ********************  HAUTEPRIORITEInterrupt *******************************
-// 				ICI: GESTION DES INTERRUPTIONS DE HAUTE PRIORITE
-// ****************************************************************************
 #pragma interrupt HAUTEPRIORITEInterrupt
 void HAUTEPRIORITEInterrupt(void)
 {
- // *****************************************
- // INTERRUPTION DE TIMER0 (toutes les 1s)
- // *****************************************
 
 }
 
-
-
-
-// ******************** BASSEPRIORITEInterrupt ********************************
-// 				ICI: GESTION DES INTERRUPTIONS DE BASSE PRIORITE
-// ****************************************************************************
 #pragma interrupt BASSEPRIORITEInterrupt
 void BASSEPRIORITEInterrupt(void)
 {
