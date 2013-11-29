@@ -110,7 +110,8 @@ void main()
     StackTask();
     StackApplications();
 
-    MonSocket = TCPOpen((DWORD)0xC80A650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //Ouverture d'un nouveau socket CLIENT ici TCP sur une certaine IP : 10.101.10.200
+    //MonSocket = TCPOpen((DWORD)0xC80A650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //Ouverture d'un nouveau socket CLIENT ici TCP sur une certaine IP : 10.101.10.200
+    MonSocket = TCPOpen((DWORD)0x780A650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //ICI 10.101.10.120
 
     while(1)
     {
@@ -118,15 +119,16 @@ void main()
         StackApplications();
         connectTCP = TCPIsConnected(MonSocket); //Vérifie si on a une connexion établie avec le noeud suivant
         if(connectTCP == TRUE){
-            //verifPut = TCPIsPutReady(MonSocket); //Retourne le nombre d'octets qui peuvent être envoyés dans le tampon TX TCP
-            if(verifPut == 0){
+            verifPut = TCPIsPutReady(MonSocket); //Vérifie si le buffer d'envoi est OK. Si renvoie 0 il faut essayer de nettoyer avant
+            while(verifPut == 0){
                 StackTask();
                 StackApplications();
-                verifPut = TCPIsPutReady(MonSocket);
-                nbDonnee = TCPPutArray(MonSocket, DonneEnvoi, 12);
+                verifPut = TCPIsPutReady(MonSocket);//Retourne le nombre d'octets qui peuvent être envoyés dans le tampon TX TCP
             }
-           nbDonnee = TCPPutArray(MonSocket, DonneEnvoi, 12);
+            nbDonnee = TCPPutArray(MonSocket, DonneEnvoi, 12);
         }
+        TCPClose(MonSocket);
+        Delay10KTCYx(200);
     }
 }
 
