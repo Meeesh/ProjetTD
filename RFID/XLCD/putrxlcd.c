@@ -1,5 +1,5 @@
 #include <p18lf46k22.h>
-#include "../xlcd.h"
+#include "xlcd.h"
 
 /********************************************************************
 *       Function Name:  putrsXLCD
@@ -13,7 +13,7 @@
 *                       the display data RAM depending on what the
 *                       previous SetxxRamAddr routine was called.
 ********************************************************************/
-void putrsXLCD(const char *buffer)
+void putrsXLCD(const rom char *buffer)
 {
         while(*buffer)                  // Write data to LCD up to null
         {

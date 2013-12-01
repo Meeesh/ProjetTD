@@ -1,6 +1,6 @@
 #ifndef __XLCD_H
 #define __XLCD_H
-#include <p18cxxx.h>
+#include <p18lf46k22.h>
 /* PIC18 XLCD peripheral routines.
  *
  *   Notes:
@@ -67,19 +67,8 @@
 #define LINE_5X10  0b00110100  /* 5x10 characters               */
 #define LINES_5X7  0b00111000  /* 5x7 characters, multiple line */
 
-#ifdef _OMNI_CODE_
-#define PARAM_SCLASS
-#else
 #define PARAM_SCLASS auto
-#endif
-
-#ifndef MEM_MODEL
-#ifdef _OMNI_CODE_
-#define MEM_MODEL
-#else
 #define MEM_MODEL far  /* Change this to near for small memory model */
-#endif
-#endif
 
 /* OpenXLCD
  * Configures I/O pins for external LCD
@@ -134,7 +123,7 @@ void putsXLCD(PARAM_SCLASS char *);
 /* putrsXLCD
  * Writes a string of characters in ROM to the LCD
  */
-void putrsXLCD(const char *);
+void putrsXLCD(const rom char *);
 
 /* User defines these routines according to the oscillator frequency */
 extern void DelayFor18TCY(void);

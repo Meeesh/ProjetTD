@@ -1,5 +1,5 @@
 #include <p18lf46k22.h>
-#include "../xlcd.h"
+#include "xlcd.h"
 
 /********************************************************************
 *       Function Name:  ReadDataXLCD                                *
