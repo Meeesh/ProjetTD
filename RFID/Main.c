@@ -118,24 +118,24 @@ void main(void)
         BAUDCON2bits.BRG16 = 0;     //desactivation du registre haut du selecteur de bauds
         SPBRG2 = 25;                //selection du baud 9600
         
-        TXSTA2bits.TX9 = 0;         //désacivation du 9eme bit à la reception
+        TXSTA2bits.TX9 = 0;         //désactivation du 9eme bit à la reception
             //Reception
-        RCSTA2bits.RX9 = 0;         //déasactivation du 9eme bit a l'envoi       
+        RCSTA2bits.RX9 = 0;         //désactivation du 9eme bit a l'envoi       
         IPR3bits.RC2IP = 1;         //selection de la priorité en haute de l'interruption
         INT_RFID = 0;               //mise a zero du flag d'interruption
         PIE3bits.RC2IE = 1;         //activation de l'interruption de la reception de l'USART2
             //Activation finale
-        RCSTA2bits.CREN = 1;        //activation du module de reception de l'USART2
+        RCSTA2bits.CREN = 1;        //activation du module de reception de l'USART2 en continue
         RCSTA2bits.SPEN = 1;        //definitions des ports TX et RX en tant que communicateur serie
         TXSTA2bits.TXEN = 1;        //activation du module d'envoie USART2
         
         
-	envoiLectureRFID();         //creation et envoi des bytes a envoyer pour selectionner la lecture pour le module RFID
+	
 		
 	//BOUCLE PRINCIPALE
 	while(1)
 	{
-            
+            envoiLectureRFID();         //creation et envoi des bytes a envoyer pour selectionner la lecture pour le module RFID
             if(FlagLecture == 1)        //on a recu une info de la part du module RFID
             {
                 IO_REL = ON;
@@ -232,8 +232,8 @@ void envoiLectureRFID(void)
     tmp = envoi[4]; envoi[4] = envoi[5]; envoi[5] = tmp;    //inversion par rapport a la fonction
     while(BusyXLCD());
     SetDDRamAddr(0x40);
-    while(BusyXLCD());
-    putrsXLCD("ENVOI");
+//    while(BusyXLCD());
+//    putrsXLCD("ENVOI");
     send = 0;
     TXREG2 = envoi[send];
     send++;
@@ -245,8 +245,8 @@ void envoiLectureRFID(void)
             send++;
         }
     }
-    while(BusyXLCD());
-    putrsXLCD("...OK");
+//    while(BusyXLCD());
+//    putrsXLCD("...OK");
 }
 
 //void envoiEcritureRFID(void)
