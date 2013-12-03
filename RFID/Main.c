@@ -28,6 +28,12 @@
 #define INT_RFID    PIR3bits.RC2IF
 #define IO_LED  PORTCbits.RC2
 #define IO_REL  PORTBbits.RB4
+#define BT_DO	PORTEbits.RE0
+#define BT_LE	PORTEbits.RE1
+#define BT_EN	PORTEbits.RE2
+#define BT_RI	PORTCbits.RC0
+#define BT_UP	PORTCbits.RC1
+#define BT_FL   INTCONbits.INT0IF
 
 
 //**************
@@ -61,7 +67,7 @@ enum {OUT, IN};
 enum {OFF, ON};
 
 volatile char TabRecuRFID[15], TabData[5];
-volatile char iRec=0, FlagLecture=0, FlagEcriture=0, env = 0;
+volatile char iRec=0, FlagLecture=0, FlagEcriture=0, env = 0, Pgm = 0;
 unsigned char lect[6], ecri[10];
 volatile unsigned int cptTMR = 0;
 unsigned char sendFlag = 0;
@@ -146,6 +152,17 @@ void main(void)
     IPR1bits.TMR1IP = 1;
     PIE1bits.TMR1IE = 1;
     PIR1bits.TMR1IF = 0;
+
+    //initialisation des bouttons
+    TRISEbits.TRISE0 = IN;
+    TRISEbits.TRISE1 = IN;
+    TRISEbits.TRISE2 = IN;
+    TRISCbits.TRISC0 = IN;
+    TRISCbits.TRISC1 = IN;
+
+    INTCONbits.INT0IE = 1;
+    BT_FL = 0;
+    INTCON2bits.INTEDG0 = 0;
    
 
     OpenXLCD(FOUR_BIT & LINES_5X7);
@@ -172,6 +189,10 @@ void main(void)
                     while(BusyXLCD());
                     putrsXLCD("                ");
                     while(BusyXLCD());
+                    SetDDRamAddr(0x40);
+                    while(BusyXLCD());
+                    putrsXLCD("                ");
+                    while(BusyXLCD());
                     SetDDRamAddr(0x00);
                     while(BusyXLCD());
                     putrsXLCD("Lecture WIN !");
@@ -193,6 +214,10 @@ void main(void)
                     while(BusyXLCD());
                     putrsXLCD("                ");
                     while(BusyXLCD());
+                    SetDDRamAddr(0x40);
+                    while(BusyXLCD());
+                    putrsXLCD("                ");
+                    while(BusyXLCD());
                     SetDDRamAddr(0x00);
                     while(BusyXLCD());
                     putrsXLCD("Lecture FAIL !");
@@ -209,6 +234,10 @@ void main(void)
                 {
                     while(BusyXLCD());
                     SetDDRamAddr(0x00);
+                    while(BusyXLCD());
+                    putrsXLCD("                ");
+                    while(BusyXLCD());
+                    SetDDRamAddr(0x40);
                     while(BusyXLCD());
                     putrsXLCD("                ");
                     while(BusyXLCD());
@@ -232,15 +261,17 @@ void main(void)
             }
             FlagEcriture = 0;
         }
-        if(sendFlag == 1)
+        if(Pgm == 1)
         {
-            if(env == 1)
-            {
-                sendRFIDE('T', 'O', 'T', 'O', 0x02);
-            }
-            else
-                sendRFIDL(0x02);
-            sendFlag = 0;
+            Delay10KTCYx(120);                  //attente de 300 ms sinon risque de surcharge
+            sendRFIDE('T', 'A', 'T', 'A', 0x02);
+            Pgm = 0;
+        }
+        if(Pgm == 2)
+        {
+            Delay10KTCYx(120);                  //attente de 300 ms sinon risque de surcharge
+            sendRFIDL(0x02);
+            Pgm = 0;
         }
     }
 }
@@ -272,16 +303,26 @@ void IntHaute(void)
         else
         {
             cptTMR = 0;
-            sendFlag = 1;
             IO_LED = !IO_LED;
-            if(env == 0)
-                env = 1;
-            else
-                env = 0;
         }
         TMR1H=0xFE;
         TMR1L=0x0B;
         PIR1bits.TMR1IF = 0;
+    }
+    if(BT_FL == 1)
+    {
+        Delay10KTCYx(2);        //attente pour le rebonds
+        if(BT_UP == 0)
+            Pgm = 1;
+        if(BT_DO == 0)
+            Pgm = 2;
+        if(BT_RI == 0)
+            Pgm = 3;
+        if(BT_LE == 0)
+            Pgm = 4;
+        if(BT_EN == 0)
+            Pgm = 5;
+        BT_FL = 0;
     }
 }
 
