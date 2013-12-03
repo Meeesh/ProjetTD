@@ -43,8 +43,9 @@ APP_CONFIG AppConfig; //Structure déclarée dans StackTsk.h -> Sans ca pas de com
 BYTE DonneEnvoi[30]="Hello world\0"; //Données à envoyer en utilisant TCPPutArray
 static TCP_SOCKET MonSocket = INVALID_SOCKET; //Initialisation du socket TCP
 WORD nbDonnee=0;
-BOOL connectTCP=0;
+BOOL connectTCP=FALSE;
 WORD verifPut=0;
+WORD verifGet=0;
 char messageLCD[16] = "Ethernet";
 //char messageLCD[16] = "Initialisation..";
 
@@ -80,6 +81,30 @@ void titi(void)
 #pragma code // retour à la zone de code
 
 
+void ethernetServeur(void){
+    StackTask();
+    StackApplications();
+    connectTCP = TCPIsConnected(MonSocket); //Vérifie si on a une connexion établie avec le noeud suivant
+    StackTask();
+    StackApplications();
+    if(connectTCP == TRUE){
+        verifGet = TCPIsGetReady(MonSocket); //Vérifie si le buffer d'envoi est OK. Si renvoie 0 il faut essayer de nettoyer avant
+        while(verifGet == 0){
+            StackTask();
+            StackApplications();
+            verifGet = TCPIsPutReady(MonSocket);//Retourne le nombre d'octets qui peuvent être envoyés dans le tampon TX TCP
+        }
+    }else{
+        PORTCbits.RC2 = 1; // Si la LED clignote c'est que l'ethernet est en cours de connexion
+    }
+    //Delay10KTCYx(200);
+    Delay10KTCYx(100);
+    //TCPClose(MonSocket);
+    StackTask();
+    StackApplications();
+    PORTCbits.RC2 = 0; // Si la LED clignote c'est que l'ethernet est en cours de connexion
+}
+
 
 // PROGRAMME PRINCIPAL
 void main()
@@ -91,6 +116,9 @@ void main()
     ANSELD = 0;
     ANSELE = 0;
 
+    TRISCbits.TRISC2 = 0;
+    PORTCbits.RC2 = 0;
+
     //LCD
     TRISD = 0;
     TRISA = 0;
@@ -99,42 +127,60 @@ void main()
     SetDDRamAddr(0x00);
     while(BusyXLCD());
     putsXLCD(messageLCD);
-    while(BusyXLCD());
-    SetDDRamAddr(0x40);
-    while(BusyXLCD());
-    putsXLCD(messageLCD);
-    while(BusyXLCD());
 
     //Module ethernet
     ENC_CS_TRIS=0; //Configuration de la pile
     ENC_CS_IO=1; //Configuration de la pile
+    
     TickInit(); //Initialisation de l'horloge de la pile TCPIP var utiliser le TMR0
     InitAppConfig();
+    
     StackInit(); //Initialisation de la pile
-
     StackTask();
     StackApplications();
 
-    //MonSocket = TCPOpen((DWORD)0xC80A650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //Ouverture d'un nouveau socket CLIENT ici TCP sur une certaine IP : 10.101.10.200
-
+//    MonSocket = TCPOpen((DWORD)0xC80A650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //Ouverture d'un nouveau socket CLIENT ici TCP sur une certaine IP : 10.101.10.200
+//    MonSocket = TCPOpen((DWORD)0x4501A8C0,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //ICI 192.168.1.69
+//    MonSocket = TCPOpen((DWORD)0xB00B650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //ICI 10.101.11.179
+    MonSocket = TCPOpen(0,TCP_OPEN_SERVER,45684,TCP_PURPOSE_DEFAULT); //ICI 10.101.11.179
+    if(MonSocket == INVALID_SOCKET){
+        while(BusyXLCD());
+        putrsXLCD(" CLOSED");
+        while(BusyXLCD());
+    }else{
+        while(BusyXLCD());
+        putrsXLCD(" OPEN");
+        while(BusyXLCD());
+    }
+    while(BusyXLCD());
+    SetDDRamAddr(0x40);
+    
     while(1)
     {
-        MonSocket = TCPOpen((DWORD)0x4501A8C0,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //ICI 192.168.1.69
+//MonSocket = TCPOpen((DWORD)0xB00B650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //ICI 10.101.11.179
+//MonSocket = TCPOpen(0,TCP_OPEN_SERVER,45684,TCP_PURPOSE_DEFAULT); //ICI 10.101.11.179
         StackTask();
         StackApplications();
 
         connectTCP = TCPIsConnected(MonSocket); //Vérifie si on a une connexion établie avec le noeud suivant
         if(connectTCP == TRUE){
-            verifPut = TCPIsPutReady(MonSocket); //Vérifie si le buffer d'envoi est OK. Si renvoie 0 il faut essayer de nettoyer avant
-            while(verifPut == 0){
-                StackTask();
-                StackApplications();
-                verifPut = TCPIsPutReady(MonSocket);//Retourne le nombre d'octets qui peuvent être envoyés dans le tampon TX TCP
-            }
-            nbDonnee = TCPPutArray(MonSocket, DonneEnvoi, 12);
+            while(BusyXLCD());
+            putrsXLCD("CONNECTED SENDING");
+            while(BusyXLCD());
+//            verifPut = TCPIsPutReady(MonSocket); //Vérifie si le buffer d'envoi est OK. Si renvoie 0 il faut essayer de nettoyer avant
+//            while(verifPut == 0){
+//                StackTask();
+//                StackApplications();
+//                verifPut = TCPIsPutReady(MonSocket);//Retourne le nombre d'octets qui peuvent être envoyés dans le tampon TX TCP
+//            }
+//            TCPPutArray(MonSocket, DonneEnvoi, 12);
+        }else{
+            PORTCbits.RC2 = 1; // Si la LED clignote c'est que l'ethernet est en cours de connexion
         }
-        TCPClose(MonSocket);
-        Delay10KTCYx(200);
+        //Delay10KTCYx(200);
+        //TCPClose(MonSocket);
+        
+        PORTCbits.RC2 = 0; // Si la LED clignote c'est que l'ethernet est en cours de connexion
     }
 }
 
