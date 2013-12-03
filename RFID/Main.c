@@ -2,10 +2,7 @@
 //* INCLUDES *
 //************
 #include <p18lf46k22.h>
-#include "head.h"
 #include "xlcd.h"
-#include "boutons.h"
-#include "affi.h"
 #include <delays.h>
 
 
@@ -38,116 +35,149 @@
 //**************
 	//INTERRUPTIONS
 void IntHaute(void);
-void IntBasse(void);
 	//AUTRES
-void envoiLectureRFID(void);
+void creaLectureRFID(void);
+void sendRFID(void);
 void LiczCRC2(unsigned char *, unsigned short *, unsigned char);
 
 
 //******************
 //* ROUTINES D'INT *
 //******************
-
-#pragma code lowVector=0x0018
-void atInterruptLow(void)
-{
-	_asm GOTO IntBasse _endasm
-}
-#pragma code
-
 #pragma code hightVector=0x0008
-void atInterruptHight(void)
+void atInterruptHigh(void)
 {
 	_asm GOTO IntHaute _endasm
 }
 #pragma code
 
 
-//*************
-//* VARIABLES *
-//*************
+//**********************
+//* VARIABLES GLOBALES *
+//**********************
+enum {NUM, ANA};
+enum {OUT, IN};
+enum {OFF, ON};
+
 volatile char TabRecuRFID[15], TabData[5];
-volatile char i=0, FlagLecture=0, FlagEcriture=0, j ;
+volatile char i=0, FlagLecture=0, FlagEcriture=0, j;
+unsigned char envoi[6];
+volatile unsigned int cptTMR = 0;
+unsigned char sendFlag = 0;
 
 //********
 //* MAIN *
 //********
 void main(void)
 {
-	//VARAIBLES LOCALES
-	
-	//CONFIG PIC
-	OSCCONbits.IRCF = 0b111;	// on defini la frequence de l'oscillateur à 16 mHz
-	
-	
-	//CONFIG PIN
-		//SELECTION AN/DI		(ANSEL)
-		
-	ANSELA = NUM;		//on place toutes les pins en numérique, XC8 se fout des pins qu'on ne peut pas définir
-	ANSELB = NUM;
-	ANSELC = NUM;
-	ANSELD = NUM;
-	ANSELE = NUM;
-	
-		//SELECTION IN/OUT		(TRIS)
-		
-        TRISCbits.TRISC2 = OUT;     //definition de la LED en sortie
-        TRISBbits.TRISB4 = OUT;     //definition du relais en sortie
-	
-		//ETAT REPOS DES PINS 	(PORT)
-		
-	initBout();     //initialisation des bouttons
-        initLCD();      //initialisation de l'écrans LCD
-        IO_LED = OFF;
-        IO_REL = OFF;
-        
-        
-                //CONF INT
-        INTCONbits.GIE = 1;     //activation des iterruptions hautes
-        INTCONbits.GIEL = 1;    //activation des interruptions basses
-        RCONbits.IPEN = 1;      //activation des priorité des interruptions
+
+    //VARAIBLES LOCALES
+
+    //CONFIG PIC
+    OSCCONbits.IRCF = 0b111;	// on defini la frequence de l'oscillateur à 16 mHz
 
 
-        //Config USART
-            //RX & TX en entrée
-        TRISDbits.TRISD7 = IN;
-        TRISDbits.TRISD6 = IN;
-            //Transmission
-        TXSTA2bits.SYNC = 0;        //mode asynchrone
-        TXSTA2bits.BRGH = 0;        //selection du registre du generateur de bauds
-        BAUDCON2bits.BRG16 = 0;     //desactivation du registre haut du selecteur de bauds
-        SPBRG2 = 25;                //selection du baud 9600
+    //CONFIG PIN
+            //SELECTION AN/DI		(ANSEL)
+
+    ANSELA = NUM;		//on place toutes les pins en numérique, XC8 se fout des pins qu'on ne peut pas définir
+    ANSELB = NUM;
+    ANSELC = NUM;
+    ANSELD = NUM;
+    ANSELE = NUM;
+
+            //SELECTION IN/OUT		(TRIS)
+
+    TRISCbits.TRISC2 = OUT;     //definition de la LED en sortie
+    TRISBbits.TRISB4 = OUT;     //definition du relais en sortie
+
+            //ETAT REPOS DES PINS 	(PORT)
+          //initialisation de l'écrans LCD
+    IO_LED = OFF;
+    IO_REL = OFF;
+
+    //INIT LCD
+    TRISDbits.TRISD0 = OUT;
+    TRISDbits.TRISD1 = OUT;
+    TRISDbits.TRISD2 = OUT;
+    TRISDbits.TRISD3 = OUT;
+                //LCD CONT
+    TRISAbits.TRISA1 = OUT;
+    TRISAbits.TRISA2 = OUT;
+    TRISDbits.TRISD5 = OUT;
         
-        TXSTA2bits.TX9 = 0;         //désactivation du 9eme bit à la reception
-            //Reception
-        RCSTA2bits.RX9 = 0;         //désactivation du 9eme bit a l'envoi       
-        IPR3bits.RC2IP = 1;         //selection de la priorité en haute de l'interruption
-        INT_RFID = 0;               //mise a zero du flag d'interruption
-        PIE3bits.RC2IE = 1;         //activation de l'interruption de la reception de l'USART2
-            //Activation finale
-        RCSTA2bits.CREN = 1;        //activation du module de reception de l'USART2 en continue
-        RCSTA2bits.SPEN = 1;        //definitions des ports TX et RX en tant que communicateur serie
-        TXSTA2bits.TXEN = 1;        //activation du module d'envoie USART2
-        
-        
-	
-		
-	//BOUCLE PRINCIPALE
-	while(1)
-	{
-            envoiLectureRFID();         //creation et envoi des bytes a envoyer pour selectionner la lecture pour le module RFID
-            if(FlagLecture == 1)        //on a recu une info de la part du module RFID
+
+            //CONF INT
+    INTCONbits.GIE = 1;     //activation des iterruptions hautes
+    INTCONbits.GIEL = 1;    //activation des interruptions basses
+    RCONbits.IPEN = 1;      //activation des priorité des interruptions
+
+    //Config USART
+        //RX & TX en entrée
+    TRISDbits.TRISD7 = IN;
+    TRISDbits.TRISD6 = IN;
+        //Transmission
+    TXSTA2bits.SYNC = 0;        //mode asynchrone
+    TXSTA2bits.BRGH = 0;        //selection du registre du generateur de bauds
+    BAUDCON2bits.BRG16 = 0;     //desactivation du registre haut du selecteur de bauds
+    SPBRG2 = 25;                //selection du baud 9600
+
+    TXSTA2bits.TX9 = 0;         //désactivation du 9eme bit à la reception
+        //Reception
+    RCSTA2bits.RX9 = 0;         //désactivation du 9eme bit a l'envoi
+    IPR3bits.RC2IP = 1;         //selection de la priorité en haute de l'interruption
+    INT_RFID = 0;               //mise a zero du flag d'interruption
+    PIE3bits.RC2IE = 1;         //activation de l'interruption de la reception de l'USART2
+        //Activation finale
+    RCSTA2bits.CREN = 1;        //activation du module de reception de l'USART2 en continue
+    RCSTA2bits.SPEN = 1;        //definitions des ports TX et RX en tant que communicateur serie
+    TXSTA2bits.TXEN = 1;        //activation du module d'envoie USART2
+
+    //configuration timer
+    T1CONbits.TMR1CS = 0b00;
+    T1CONbits.T1CKPS = 0b11;
+    T1CONbits.T1SYNC = 1;
+    T1GCONbits.TMR1GE = 0;
+    TMR1H = 0xFE;
+    TMR1L = 0x0B;
+    T1CONbits.TMR1ON = 1;
+        //interuptions
+    IPR1bits.TMR1IP = 1;
+    PIE1bits.TMR1IE = 1;
+    PIR1bits.TMR1IF = 0;
+   
+
+    OpenXLCD(FOUR_BIT & LINES_5X7);
+    while(BusyXLCD());
+    putrsXLCD("Hello RFID");
+    while(BusyXLCD());
+    SetDDRamAddr(0x40);
+
+    creaLectureRFID();
+
+    //BOUCLE PRINCIPALE
+    while(1)
+    {
+        /*
+        Delay10KTCYx(200);
+        Delay10KTCYx(200);
+        PORTCbits.RC2 = 1;
+        Delay10KTCYx(200);
+        Delay10KTCYx(200);
+        PORTCbits.RC2 = 0;
+*/
+
+        if(FlagLecture == 1)        //on a recu une info de la part du module RFID
+        {
+            if(i >= 9)          //si on a tout recu
             {
-                IO_REL = ON;
-                if(i >= 9)          //si on a tout recu
+                if(TabRecuRFID[7] == 0xFF)  //si la lecture c'est bien passer
                 {
-                    if(TabRecuRFID[7] == 0xFF)  //si la lecture c'est bien passer
-                    {
-                        while(BusyXLCD());
-                        SetDDRamAddr(0x00);
-                        while(BusyXLCD());
-                        putrsXLCD("Lecture WIN");
-                        
+                    while(BusyXLCD());
+                    SetDDRamAddr(0x00);
+                    while(BusyXLCD());
+                    putrsXLCD("Lecture WIN");
+
 //                        for(x = 0; x <= 4; x++){            //transfert des data recu vers a tableau pour ne pas perdre d'info si le RFID renvoi des données
 //                            TabData[x] = TabRecuRFID[x+3];
 //                        }
@@ -160,32 +190,39 @@ void main(void)
 //                        for(j = 0 ; j <= 10 ; j++){
 //                            TabRecuRFID[j] = 0;             //nettoyage du tableau
 //                        }
-                    }
-                    else
-                    {
-                        while(BusyXLCD());
-                        SetDDRamAddr(0x00);
-                        while(BusyXLCD());
-                        putrsXLCD("Lecture FAIL !");
-                    }
                 }
-            }
-            if(FlagEcriture == 1)
-            {
-                if(i >= 5)
+                else
                 {
-                    i = 0;
-                    for(j = 0; j<= 10; j++)
-                    {
-                        TabRecuRFID[j] = 0;
-                    }
                     while(BusyXLCD());
                     SetDDRamAddr(0x00);
                     while(BusyXLCD());
-                    putrsXLCD("Ecriture WIN !");
+                    putrsXLCD("Lecture FAIL !");
+                    FlagLecture = 0;
                 }
             }
-	}
+        }
+        if(FlagEcriture == 1)
+        {
+            if(i >= 5)
+            {
+                i = 0;
+                for(j = 0; j<= 10; j++)
+                {
+                    TabRecuRFID[j] = 0;
+                }
+                while(BusyXLCD());
+                SetDDRamAddr(0x00);
+                while(BusyXLCD());
+                putrsXLCD("Ecriture WIN !");
+                FlagEcriture = 0;
+            }
+        }
+        if(sendFlag == 1)
+        {
+            sendFlag = 0;
+            sendRFID();
+        }
+    }
 }
 
 
@@ -193,87 +230,60 @@ void main(void)
 //* FONCTIONS *
 //************
 	//INTERRUPTIONS
+#pragma interrupt IntHaute
 void IntHaute(void)
 {
     if(INT_RFID == 1)
-    {
-        IO_LED = ON;            //on a recu quelque chose du RFID
-        TabRecuRFID[i]=RCREG2;
-        i++;
+    {        
+        TabRecuRFID[i]=RCREG2;              //on enregistre se qu'on a recu
+        i++;                                //on passe a la cellule suivante
         if(TabRecuRFID[2] == 0x13)          //(c'est une lecture) il faut vider le tableau
             FlagLecture = 1;
         if(TabRecuRFID[2] == 0x11)          //c'est une ecriture, il ne faut rien faire
             FlagEcriture = 1;
         INT_RFID = 0;
     }
-    if(BT_FL == 1)
+    if(PIR1bits.TMR1IF == 1)
     {
-        IO_LED = OFF;
-        IO_REL = OFF;
-        BT_FL = 0;
+        if(cptTMR <= 1000)
+        {
+            cptTMR++;
+        }
+        else
+        {
+            cptTMR = 0;
+            sendFlag = 1;
+            IO_LED=ON;
+        }
+        TMR1H=0xFE;
+        TMR1L=0x0B;
+        PIR1bits.TMR1IF = 0;
     }
-
-}
-void IntBasse(void)
-{
-	
 }
 
-void envoiLectureRFID(void)
+void creaLectureRFID()
 {
     char tmp;
-    char send;
-    unsigned char envoi[6];
     envoi[0] = 0xFF;        //on selectionne toutes les cartes
     envoi[1] = 0x06;        //longueure de la tramme
     envoi[2] = 0x12;        //envoie de la commande de lecture
     envoi[3] = 0x02;        //selection du secteur no 2
     LiczCRC2(envoi, (unsigned short *)&envoi[4], 4);    //calcul des bits CRCH et CRCL
     tmp = envoi[4]; envoi[4] = envoi[5]; envoi[5] = tmp;    //inversion par rapport a la fonction
-    while(BusyXLCD());
-    SetDDRamAddr(0x40);
-//    while(BusyXLCD());
-//    putrsXLCD("ENVOI");
-    send = 0;
+}
+
+void sendRFID()
+{
+    char send = 0;
     TXREG2 = envoi[send];
     send++;
     while(send <= 5)      //envoi des données un a un sur l'USART2
     {
-        if(TXSTA2bits.TRMT != 1)
-        {
-            TXREG2 = envoi[send];
-            send++;
-        }
+        while(TXSTA2bits.TRMT != 1);
+        TXREG2 = envoi[send];
+        send++;
     }
-//    while(BusyXLCD());
-//    putrsXLCD("...OK");
 }
-
-//void envoiEcritureRFID(void)
-//{
-//    char envoi[10];
-//    char temp, send;
-//    envoi[0] = 0xFF;        //on selectionne la carte
-//    envoi[1] = 0x0A;        //longueure de la trame
-//    envoi[2] = 0x10;        //commande d'ecriture
-//    envoi[3] = 0x01;        //DATA1
-//    envoi[4] = 0x02;        //DATA2
-//    envoi[5] = 0x03;        //DATA3
-//    envoi[6] = 0x04;        //DATA4
-//    envoi[7] = 0x02;        //secteur a ecrire
-//    LiczCRC2(envoi, (unsigned short *)&envoi[8], 8);    //calcul des bits CRCH et CRCL
-//    temp = envoi[8]; envoi[8] = envoi[9]; envoi[9] = temp;    //inversion par rapport a la fonction
-//    send = 0;
-//    while(send <= 9)      //envoi des données un a un sur l'USART2
-//    {
-//
-//        if(TXSTA2bits.TRMT2 != 1)
-//        {
-//            TXREG2 = envoi[send];
-//            send++;
-//        }
-//    }
-//}
 
 void LiczCRC2(unsigned char *ZAdr, unsigned short *DoAdr, unsigned char Ile)        //calcul des bits CRCL & CRCH
 {
