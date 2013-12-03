@@ -36,10 +36,11 @@
 	//INTERRUPTIONS
 void IntHaute(void);
 	//AUTRES
-void creaLectureRFID(void);
-void sendRFID(void);
+//void creaTabRFID(void);
+void sendRFIDL(char);                                               //envoi d'une lecture au RFID (secteur)
+void sendRFIDE(char, char, char, char, char);                       //envoi une ecriture au RFID (data1, data2, data3, data4, secteur)
 void LiczCRC2(unsigned char *, unsigned short *, unsigned char);
-
+void resetRFID(void);
 
 //******************
 //* ROUTINES D'INT *
@@ -60,8 +61,8 @@ enum {OUT, IN};
 enum {OFF, ON};
 
 volatile char TabRecuRFID[15], TabData[5];
-volatile char i=0, FlagLecture=0, FlagEcriture=0, j;
-unsigned char envoi[6];
+volatile char iRec=0, FlagLecture=0, FlagEcriture=0, env = 0;
+unsigned char lect[6], ecri[10];
 volatile unsigned int cptTMR = 0;
 unsigned char sendFlag = 0;
 
@@ -150,77 +151,90 @@ void main(void)
     OpenXLCD(FOUR_BIT & LINES_5X7);
     while(BusyXLCD());
     putrsXLCD("Hello RFID");
-    while(BusyXLCD());
-    SetDDRamAddr(0x40);
-
-    creaLectureRFID();
 
     //BOUCLE PRINCIPALE
     while(1)
     {
-        /*
-        Delay10KTCYx(200);
-        Delay10KTCYx(200);
-        PORTCbits.RC2 = 1;
-        Delay10KTCYx(200);
-        Delay10KTCYx(200);
-        PORTCbits.RC2 = 0;
-*/
-
         if(FlagLecture == 1)        //on a recu une info de la part du module RFID
         {
-            if(i >= 9)          //si on a tout recu
+            if(iRec >= 9)          //si on a tout recu
             {
                 if(TabRecuRFID[7] == 0xFF)  //si la lecture c'est bien passer
                 {
                     while(BusyXLCD());
                     SetDDRamAddr(0x00);
                     while(BusyXLCD());
-                    putrsXLCD("Lecture WIN");
-
-//                        for(x = 0; x <= 4; x++){            //transfert des data recu vers a tableau pour ne pas perdre d'info si le RFID renvoi des données
-//                            TabData[x] = TabRecuRFID[x+3];
-//                        }
-//                        TabData[4] = 0;                     //la fonction puts s'attend a un 0 pour terminer l'envoi
-//                        while(BusyXLCD());
-//                        SetDDRamAddr(0x40);
-//                        while(BusyXLCD());
-//                        putsXLCD(&TabRecuRFID[3]);
-//                         i=0;
-//                        for(j = 0 ; j <= 10 ; j++){
-//                            TabRecuRFID[j] = 0;             //nettoyage du tableau
-//                        }
+                    putrsXLCD("                ");
+                    while(BusyXLCD());
+                    SetDDRamAddr(0x00);
+                    while(BusyXLCD());
+                    putrsXLCD("Lecture WIN !");
+                    TabData[0] = TabRecuRFID[3];
+                    TabData[1] = TabRecuRFID[4];
+                    TabData[2] = TabRecuRFID[5];
+                    TabData[3] = TabRecuRFID[6];
+                    TabData[4] = 0;
+                    while(BusyXLCD());
+                    SetDDRamAddr(0x40);
+                    while(BusyXLCD());
+                    putsXLCD(&TabData);
+                    resetRFID();
                 }
                 else
                 {
                     while(BusyXLCD());
                     SetDDRamAddr(0x00);
                     while(BusyXLCD());
+                    putrsXLCD("                ");
+                    while(BusyXLCD());
+                    SetDDRamAddr(0x00);
+                    while(BusyXLCD());
                     putrsXLCD("Lecture FAIL !");
-                    FlagLecture = 0;
+                    resetRFID();                    
                 }
             }
+            FlagLecture = 0;
         }
         if(FlagEcriture == 1)
         {
-            if(i >= 5)
+            if(iRec >= 5)
             {
-                i = 0;
-                for(j = 0; j<= 10; j++)
+                if(TabRecuRFID[3] == 0xFF)
                 {
-                    TabRecuRFID[j] = 0;
+                    while(BusyXLCD());
+                    SetDDRamAddr(0x00);
+                    while(BusyXLCD());
+                    putrsXLCD("                ");
+                    while(BusyXLCD());
+                    SetDDRamAddr(0x00);
+                    while(BusyXLCD());
+                    putrsXLCD("Ecriture WIN !");
+                    resetRFID();
                 }
-                while(BusyXLCD());
-                SetDDRamAddr(0x00);
-                while(BusyXLCD());
-                putrsXLCD("Ecriture WIN !");
-                FlagEcriture = 0;
+                else
+                {
+                    while(BusyXLCD());
+                    SetDDRamAddr(0x00);
+                    while(BusyXLCD());
+                    putrsXLCD("                ");
+                    while(BusyXLCD());
+                    SetDDRamAddr(0x00);
+                    while(BusyXLCD());
+                    putrsXLCD("Ecriture FAIL !");
+                    resetRFID();
+                }
             }
+            FlagEcriture = 0;
         }
         if(sendFlag == 1)
         {
+            if(env == 1)
+            {
+                sendRFIDE(0x41, 0x42, 0x42, 0x41, 0x02);
+            }
+            else
+                sendRFIDL(0x02);
             sendFlag = 0;
-            sendRFID();
         }
     }
 }
@@ -235,8 +249,8 @@ void IntHaute(void)
 {
     if(INT_RFID == 1)
     {        
-        TabRecuRFID[i]=RCREG2;              //on enregistre se qu'on a recu
-        i++;                                //on passe a la cellule suivante
+        TabRecuRFID[iRec]=RCREG2;              //on enregistre se qu'on a recu
+        iRec++;                                //on passe a la cellule suivante
         if(TabRecuRFID[2] == 0x13)          //(c'est une lecture) il faut vider le tableau
             FlagLecture = 1;
         if(TabRecuRFID[2] == 0x11)          //c'est une ecriture, il ne faut rien faire
@@ -245,7 +259,7 @@ void IntHaute(void)
     }
     if(PIR1bits.TMR1IF == 1)
     {
-        if(cptTMR <= 1000)
+        if(cptTMR <= 2500)
         {
             cptTMR++;
         }
@@ -253,7 +267,11 @@ void IntHaute(void)
         {
             cptTMR = 0;
             sendFlag = 1;
-            IO_LED=ON;
+            IO_LED = !IO_LED;
+            if(env == 0)
+                env = 1;
+            else
+                env = 0;
         }
         TMR1H=0xFE;
         TMR1L=0x0B;
@@ -261,27 +279,90 @@ void IntHaute(void)
     }
 }
 
-void creaLectureRFID()
-{
-    char tmp;
-    envoi[0] = 0xFF;        //on selectionne toutes les cartes
-    envoi[1] = 0x06;        //longueure de la tramme
-    envoi[2] = 0x12;        //envoie de la commande de lecture
-    envoi[3] = 0x02;        //selection du secteur no 2
-    LiczCRC2(envoi, (unsigned short *)&envoi[4], 4);    //calcul des bits CRCH et CRCL
-    tmp = envoi[4]; envoi[4] = envoi[5]; envoi[5] = tmp;    //inversion par rapport a la fonction
-}
+//void creaTabRFID()
+//{
+//    char tmp;
+//    //LECTURE
+//    //------------------
+//    lect[0] = 0xFF;        //on selectionne toutes les cartes
+//    lect[1] = 0x06;        //longueure de la tramme
+//    lect[2] = 0x12;        //envoie de la commande de lecture
+//    lect[3] = 0x02;        //selection du secteur no 2
+//    LiczCRC2(lect, (unsigned short *)&lect[4], 4);    //calcul des bits CRCH et CRCL
+//    tmp = lect[4]; lect[4] = lect[5]; lect[5] = tmp;    //inversion par rapport a la fonction
+//    //------------------
+//
+//    //ECRITURE
+//    //------------------
+//    ecri[0] = 0xFF;         //on ne connait pas la carte
+//    ecri[1] = 0x0A;         //longueure de la trame
+//    ecri[2] = 0x10;         //commande d'ecriture
+//    ecri[3] = 0x01;         //DATA1
+//    ecri[4] = 0x02;         //DATA2
+//    ecri[5] = 0x03;         //DATA3
+//    ecri[6] = 0x04;         //DATA4
+//    ecri[7] = 0x03;         //Secteur
+//    LiczCRC2(ecri, (unsigned short *)&ecri[8], 8);    //calcul des bits CRCH et CRCL
+//    tmp = ecri[8]; ecri[8] = ecri[9]; ecri[9] = tmp;    //inversion par rapport a la fonction
+//    //------------------
+//}
 
-void sendRFID()
+void sendRFIDL(char sect)
 {
     char send = 0;
-    TXREG2 = envoi[send];
+    char tmp;
+    //LECTURE
+    //------------------
+    lect[0] = 0xFF;        //on selectionne toutes les cartes
+    lect[1] = 0x06;        //longueure de la tramme
+    lect[2] = 0x12;        //envoie de la commande de lecture
+    lect[3] = sect;        //selection du secteur
+    LiczCRC2(lect, (unsigned short *)&lect[4], 4);    //calcul des bits CRCH et CRCL
+    tmp = lect[4]; lect[4] = lect[5]; lect[5] = tmp;    //inversion par rapport a la fonction
+    //------------------
+    TXREG2 = lect[send];
     send++;
     while(send <= 5)      //envoi des données un a un sur l'USART2
     {
         while(TXSTA2bits.TRMT != 1);
-        TXREG2 = envoi[send];
+        TXREG2 = lect[send];
         send++;
+    }
+}
+
+void sendRFIDE(char dt1, char dt2, char dt3, char dt4, char sect)
+{
+    char send = 0;
+    char tmp;
+    //ECRITURE
+    //------------------
+    ecri[0] = 0xFF;         //on ne connait pas la carte
+    ecri[1] = 0x0A;         //longueure de la trame
+    ecri[2] = 0x10;         //commande d'ecriture
+    ecri[3] = dt1;         //DATA1
+    ecri[4] = dt2;         //DATA2
+    ecri[5] = dt3;         //DATA3
+    ecri[6] = dt4;         //DATA4
+    ecri[7] = sect;         //Secteur
+    LiczCRC2(ecri, (unsigned short *)&ecri[8], 8);    //calcul des bits CRCH et CRCL
+    tmp = ecri[8]; ecri[8] = ecri[9]; ecri[9] = tmp;    //inversion par rapport a la fonction
+    //------------------
+    TXREG2 = ecri[send];
+    send++;
+    while(send <= 9)      //envoi des données un a un sur l'USART2
+    {
+        while(TXSTA2bits.TRMT != 1);
+        TXREG2 = ecri[send];
+        send++;
+    }
+}
+
+void resetRFID(){
+    char j;
+    for(j=0; j<14; j++)
+    {
+        TabRecuRFID[j] = 0;
+        iRec = 0;
     }
 }
 
@@ -323,6 +404,8 @@ void DelayPORXLCD(void)			//delais de 15ms
 {
 	Delay10KTCYx(6);
 }
+
+
 void DelayXLCD(void)			//delais de 5ms
 {
 	Delay10KTCYx(2);
