@@ -1,0 +1,360 @@
+Version 3.2 HI-TECH Software Intermediate Code
+"4 C:/Users/etu20261/Desktop/1wire+usart/ftoa/ftoa.c
+[v _ftoa `(i ~T0 @X0 1 ef4`f`*uc`uc`uc ]
+{
+[; ;ftoa.c: 3: int ftoa (float x, char *str, char prec, char format)
+[; ;ftoa.c: 4: {
+[e :U _ftoa ]
+[v _x `f ~T0 @X0 1 r1 ]
+[v _str `*uc ~T0 @X0 1 r2 ]
+[v _prec `uc ~T0 @X0 1 r3 ]
+[v _format `uc ~T0 @X0 1 r4 ]
+[f ]
+"5
+[v _ie `i ~T0 @X0 1 a ]
+[v _i `i ~T0 @X0 1 a ]
+[v _k `i ~T0 @X0 1 a ]
+[v _ndig `i ~T0 @X0 1 a ]
+[v _fstyle `i ~T0 @X0 1 a ]
+"6
+[v _y `d ~T0 @X0 1 a ]
+"7
+[v _start `*uc ~T0 @X0 1 a ]
+[; ;ftoa.c: 5: int ie, i, k, ndig, fstyle;
+[; ;ftoa.c: 6: double y;
+[; ;ftoa.c: 7: char *start;
+[; ;ftoa.c: 9: start=str;
+"9
+[e = _start _str ]
+[; ;ftoa.c: 12: ndig=prec+1;
+"12
+[e = _ndig + -> _prec `i -> 1 `i ]
+[; ;ftoa.c: 13: if (prec<0)
+"13
+[e $ ! < -> _prec `i -> 0 `i 2  ]
+[; ;ftoa.c: 14: ndig=7;
+"14
+[e = _ndig -> 7 `i ]
+[e :U 2 ]
+[; ;ftoa.c: 15: if (prec>22)
+"15
+[e $ ! > -> _prec `i -> 22 `i 3  ]
+[; ;ftoa.c: 16: ndig=23;
+"16
+[e = _ndig -> 23 `i ]
+[e :U 3 ]
+[; ;ftoa.c: 18: fstyle = 0;
+"18
+[e = _fstyle -> 0 `i ]
+[; ;ftoa.c: 19: if (format == 'f' || format == 'F')
+"19
+[e $ ! || == -> _format `ui -> 102 `ui == -> _format `ui -> 70 `ui 4  ]
+[; ;ftoa.c: 20: fstyle = 1;
+"20
+[e = _fstyle -> 1 `i ]
+[e :U 4 ]
+[; ;ftoa.c: 21: if (format=='g' || format=='G')
+"21
+[e $ ! || == -> _format `ui -> 103 `ui == -> _format `ui -> 71 `ui 5  ]
+[; ;ftoa.c: 22: fstyle=2;
+"22
+[e = _fstyle -> 2 `i ]
+[e :U 5 ]
+[; ;ftoa.c: 24: ie = 0;
+"24
+[e = _ie -> 0 `i ]
+[; ;ftoa.c: 26: if ( x < 0)
+"26
+[e $ ! < _x -> -> 0 `i `f 6  ]
+[; ;ftoa.c: 27: {
+"27
+{
+[; ;ftoa.c: 28: *str++ = '-';
+"28
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x -> -> 45 `ui `uc ]
+[; ;ftoa.c: 29: x = -x;
+"29
+[e = _x -U _x ]
+"30
+}
+[e :U 6 ]
+[; ;ftoa.c: 30: }
+[; ;ftoa.c: 33: if (x!=0.0)
+"33
+[e $ ! != -> _x `d .0.0 7  ]
+[; ;ftoa.c: 34: {
+"34
+{
+[; ;ftoa.c: 35: while (x < 1.0)
+"35
+[e $U 8  ]
+[e :U 9 ]
+[; ;ftoa.c: 36: {
+"36
+{
+[; ;ftoa.c: 37: x =x* 10.0;
+"37
+[e = _x -> * -> _x `d .10.0 `f ]
+[; ;ftoa.c: 38: ie--;
+"38
+[e -- _ie -> 1 `i ]
+"39
+}
+[e :U 8 ]
+"35
+[e $ < -> _x `d .1.0 9  ]
+[e :U 10 ]
+"40
+}
+[e :U 7 ]
+[; ;ftoa.c: 39: }
+[; ;ftoa.c: 40: }
+[; ;ftoa.c: 43: while (x >= 10.0)
+"43
+[e $U 11  ]
+[e :U 12 ]
+[; ;ftoa.c: 44: {
+"44
+{
+[; ;ftoa.c: 45: x = x*(1.0/10.0);
+"45
+[e = _x -> * -> _x `d / .1.0 .10.0 `f ]
+[; ;ftoa.c: 46: ie++;
+"46
+[e ++ _ie -> 1 `i ]
+"47
+}
+[e :U 11 ]
+"43
+[e $ >= -> _x `d .10.0 12  ]
+[e :U 13 ]
+[; ;ftoa.c: 47: }
+[; ;ftoa.c: 61: if (fstyle)
+"61
+[e $ ! != _fstyle -> 0 `i 14  ]
+[; ;ftoa.c: 62: ndig =ndig + ie;
+"62
+[e = _ndig + _ndig _ie ]
+[e :U 14 ]
+[; ;ftoa.c: 64: if(prec==0 && ie>ndig && fstyle)
+"64
+[e $ ! && && == -> _prec `i -> 0 `i > _ie _ndig != _fstyle -> 0 `i 15  ]
+[; ;ftoa.c: 65: {
+"65
+{
+[; ;ftoa.c: 66: ndig=ie;
+"66
+[e = _ndig _ie ]
+"67
+}
+[e :U 15 ]
+[; ;ftoa.c: 67: }
+[; ;ftoa.c: 71: y=1;
+"71
+[e = _y -> -> 1 `i `d ]
+[; ;ftoa.c: 72: for (i = 1; i < ndig; i++)
+"72
+{
+[e = _i -> 1 `i ]
+[e $U 19  ]
+"73
+[e :U 16 ]
+[; ;ftoa.c: 73: y = y *(1.0/10.0);
+[e = _y * _y / .1.0 .10.0 ]
+"72
+[e ++ _i -> 1 `i ]
+[e :U 19 ]
+[e $ < _i _ndig 16  ]
+[e :U 17 ]
+"73
+}
+[; ;ftoa.c: 75: x = x+ y *(1.0/2.0);
+"75
+[e = _x -> + -> _x `d * _y / .1.0 .2.0 `f ]
+[; ;ftoa.c: 78: if (x >= 10.0)
+"78
+[e $ ! >= -> _x `d .10.0 20  ]
+[; ;ftoa.c: 79: {
+"79
+{
+[; ;ftoa.c: 80: x = 1.0;
+"80
+[e = _x -> .1.0 `f ]
+[; ;ftoa.c: 81: ie++;
+"81
+[e ++ _ie -> 1 `i ]
+[; ;ftoa.c: 82: ndig++;
+"82
+[e ++ _ndig -> 1 `i ]
+"83
+}
+[e :U 20 ]
+[; ;ftoa.c: 83: }
+[; ;ftoa.c: 86: if (fstyle && ie<0)
+"86
+[e $ ! && != _fstyle -> 0 `i < _ie -> 0 `i 21  ]
+[; ;ftoa.c: 87: {
+"87
+{
+[; ;ftoa.c: 88: *str++ = '0';
+"88
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x -> -> 48 `ui `uc ]
+[; ;ftoa.c: 89: if (prec!=0)
+"89
+[e $ ! != -> _prec `i -> 0 `i 22  ]
+[; ;ftoa.c: 90: *str++ = '.';
+"90
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x -> -> 46 `ui `uc ]
+[e :U 22 ]
+[; ;ftoa.c: 91: if (ndig < 0)
+"91
+[e $ ! < _ndig -> 0 `i 23  ]
+[; ;ftoa.c: 92: ie = ie-ndig;
+"92
+[e = _ie - _ie _ndig ]
+[e :U 23 ]
+[; ;ftoa.c: 93: for (i = -1; i > ie; i--)
+"93
+{
+[e = _i -U -> 1 `i ]
+[e $U 27  ]
+"94
+[e :U 24 ]
+[; ;ftoa.c: 94: *str++ = '0';
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x -> -> 48 `ui `uc ]
+"93
+[e -- _i -> 1 `i ]
+[e :U 27 ]
+[e $ > _i _ie 24  ]
+[e :U 25 ]
+"94
+}
+"95
+}
+[e :U 21 ]
+[; ;ftoa.c: 95: }
+[; ;ftoa.c: 98: for (i=0; i < ndig; i++)
+"98
+{
+[e = _i -> 0 `i ]
+[e $U 31  ]
+"99
+[e :U 28 ]
+[; ;ftoa.c: 99: {
+{
+"100
+[v _b `f ~T0 @X0 1 a ]
+[; ;ftoa.c: 100: float b;
+[; ;ftoa.c: 101: k = x;
+"101
+[e = _k -> _x `i ]
+[; ;ftoa.c: 102: *str++ = k + '0';
+"102
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x -> + -> _k `ui -> 48 `ui `uc ]
+[; ;ftoa.c: 103: if (((!fstyle && i==0) || (fstyle && i==ie)) && prec!=0)
+"103
+[e $ ! && || && ! != _fstyle -> 0 `i == _i -> 0 `i && != _fstyle -> 0 `i == _i _ie != -> _prec `i -> 0 `i 32  ]
+[; ;ftoa.c: 104: *str++ = '.';
+"104
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x -> -> 46 `ui `uc ]
+[e :U 32 ]
+[; ;ftoa.c: 105: b=(float)k;
+"105
+[e = _b -> _k `f ]
+[; ;ftoa.c: 108: b=b*10.0;
+"108
+[e = _b -> * -> _b `d .10.0 `f ]
+[; ;ftoa.c: 109: x=x*10.0;
+"109
+[e = _x -> * -> _x `d .10.0 `f ]
+[; ;ftoa.c: 110: x =x - b;
+"110
+[e = _x - _x _b ]
+"113
+}
+"98
+[e ++ _i -> 1 `i ]
+[e :U 31 ]
+[e $ < _i _ndig 28  ]
+[e :U 29 ]
+"113
+}
+[; ;ftoa.c: 113: }
+[; ;ftoa.c: 116: if (!fstyle && ie != 0)
+"116
+[e $ ! && ! != _fstyle -> 0 `i != _ie -> 0 `i 33  ]
+[; ;ftoa.c: 117: {
+"117
+{
+[; ;ftoa.c: 118: *str++ = format;
+"118
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x _format ]
+[; ;ftoa.c: 119: if (ie < 0)
+"119
+[e $ ! < _ie -> 0 `i 34  ]
+[; ;ftoa.c: 120: {
+"120
+{
+[; ;ftoa.c: 121: ie = -ie;
+"121
+[e = _ie -U _ie ]
+[; ;ftoa.c: 122: *str++ = '-';
+"122
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x -> -> 45 `ui `uc ]
+"123
+}
+[e :U 34 ]
+[; ;ftoa.c: 123: }
+[; ;ftoa.c: 126: for (k=1000; k>ie; k=k/10);
+"126
+{
+[e = _k -> 1000 `i ]
+[e $U 38  ]
+[e :U 35 ]
+[e = _k / _k -> 10 `i ]
+[e :U 38 ]
+[e $ > _k _ie 35  ]
+[e :U 36 ]
+}
+[; ;ftoa.c: 128: for (; k > 0; k=k/10)
+"128
+{
+[e $ > _k -> 0 `i 39  ]
+[e $U 40  ]
+"129
+[e :U 39 ]
+[; ;ftoa.c: 129: {
+{
+"130
+[v _t `uc ~T0 @X0 1 a ]
+[; ;ftoa.c: 130: char t;
+[; ;ftoa.c: 132: *str++ = t + '0';
+"132
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x -> + -> _t `ui -> 48 `ui `uc ]
+[; ;ftoa.c: 133: ie = ie -(t*k);
+"133
+[e = _ie - _ie * -> _t `i _k ]
+"134
+}
+"128
+[e = _k / _k -> 10 `i ]
+[e $ > _k -> 0 `i 39  ]
+[e :U 40 ]
+"134
+}
+"136
+}
+[e :U 33 ]
+[; ;ftoa.c: 134: }
+[; ;ftoa.c: 136: }
+[; ;ftoa.c: 137: *str++ = '\0';
+"137
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x -> -> 0 `ui `uc ]
+[; ;ftoa.c: 138: return (str-start);
+"138
+[e ) -> / - -> _str `x -> _start `x -> -> # *U _str `i `x `i ]
+[e $UE 1  ]
+[; ;ftoa.c: 139: }
+"139
+[e :UE 1 ]
+}
