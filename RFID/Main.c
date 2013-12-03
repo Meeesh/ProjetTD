@@ -152,6 +152,12 @@ void main(void)
     while(BusyXLCD());
     putrsXLCD("Hello RFID");
 
+    TabData[0] = 0;
+    TabData[1] = 0;
+    TabData[2] = 0;
+    TabData[3] = 0;
+    TabData[4] = 0;
+
     //BOUCLE PRINCIPALE
     while(1)
     {
@@ -230,7 +236,7 @@ void main(void)
         {
             if(env == 1)
             {
-                sendRFIDE(0x41, 0x42, 0x42, 0x41, 0x02);
+                sendRFIDE('T', 'O', 'T', 'O', 0x02);
             }
             else
                 sendRFIDL(0x02);
