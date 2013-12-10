@@ -1,8 +1,8 @@
 build/default/production/Main.o:  \
-	C:/Users/etu20261/MPLABXProjects/Main.c  \
-	C:/Users/etu20261/MPLABXProjects/wire/1wire.h  \
-	C:/Users/etu20261/MPLABXProjects/ftoa/ftoa.h  \
-	C:/Users/etu20261/MPLABXProjects/head.h  \
-	C:/Users/etu20261/MPLABXProjects/boutons.h  \
-	C:/Users/etu20261/MPLABXProjects/affi.h  \
+	C:/Users/jerome/Documents/GitHub/ProjetTD/1WIRE_USART/Main.c  \
+	C:/Users/jerome/Documents/GitHub/ProjetTD/1WIRE_USART/wire/1wire.h  \
+	C:/Users/jerome/Documents/GitHub/ProjetTD/1WIRE_USART/ftoa/ftoa.h  \
+	C:/Users/jerome/Documents/GitHub/ProjetTD/1WIRE_USART/head.h  \
+	C:/Users/jerome/Documents/GitHub/ProjetTD/1WIRE_USART/boutons.h  \
+	C:/Users/jerome/Documents/GitHub/ProjetTD/1WIRE_USART/affi.h  \
 

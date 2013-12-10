@@ -8,3 +8,15 @@ C:\Users\etu20261\Desktop\database\database\obj\Debug\database.Properties.Resour
 C:\Users\etu20261\Desktop\database\database\obj\Debug\database.csproj.GenerateResource.Cache
 C:\Users\etu20261\Desktop\database\database\obj\Debug\database.exe
 C:\Users\etu20261\Desktop\database\database\obj\Debug\database.pdb
+C:\Users\jerome\Desktop\database\database\bin\Debug\database.exe.config
+C:\Users\jerome\Desktop\database\database\obj\Debug\database.exe
+C:\Users\jerome\Desktop\database\database\obj\Debug\database.pdb
+C:\Users\jerome\Desktop\database\database\bin\Debug\exempledatabase.sdf
+C:\Users\jerome\Desktop\database\database\bin\Debug\database.exe
+C:\Users\jerome\Desktop\database\database\bin\Debug\database.pdb
+C:\Users\jerome\Desktop\database\database\obj\Debug\database.csprojResolveAssemblyReference.cache
+C:\Users\jerome\Desktop\database\database\obj\Debug\database.Form1.resources
+C:\Users\jerome\Desktop\database\database\obj\Debug\database.Properties.Resources.resources
+C:\Users\jerome\Desktop\database\database\obj\Debug\database.csproj.GenerateResource.Cache
+C:\Users\jerome\Desktop\database\database\bin\Debug\temp.mdf
+C:\Users\jerome\Desktop\database\database\bin\Debug\temp_log.ldf

@@ -10,9 +10,9 @@ CND_CONF=default
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/MPLABXProjects.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=MPLABXProjects.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-PACKAGE_TOP_DIR=mplabxprojects/
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/1WIRE_USART.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=1WIRE_USART.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+PACKAGE_TOP_DIR=1wireusart/
 
 # Functions
 function checkReturnCode
@@ -57,15 +57,15 @@ mkdir -p ${TMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory ${TMPDIR}/mplabxprojects/bin
+makeDirectory ${TMPDIR}/1wireusart/bin
 copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/package/mplabxprojects.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/package/1wireusart.tar
 cd ${TMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/mplabxprojects.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/1wireusart.tar *
 checkReturnCode
 
 # Cleanup

@@ -197,7 +197,6 @@ void envoyerMessage (void) {
     sendToUsart(capteur[2]);
     sendToUsart(capteur[3]);
     sendToUsart(capteur[4]);
-    sendToUsart(0b00001010);
     bouton = 'n';
 }
 

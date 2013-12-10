@@ -21,12 +21,6 @@
       <itemPath>Main.c</itemPath>
       <itemPath>affi.c</itemPath>
       <itemPath>boutons.c</itemPath>
-      <itemPath>XLCD/readaddr.c</itemPath>
-      <itemPath>XLCD/readdata.c</itemPath>
-      <itemPath>XLCD/setcgram.c</itemPath>
-      <itemPath>XLCD/setddram.c</itemPath>
-      <itemPath>XLCD/wcmdxlcd.c</itemPath>
-      <itemPath>XLCD/writdata.c</itemPath>
       <itemPath>wire/1wire.c</itemPath>
       <itemPath>ftoa/ftoa.c</itemPath>
     </logicalFolder>
@@ -51,7 +45,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>Simulator</platformTool>
         <languageToolchain>C18</languageToolchain>
-        <languageToolchainVersion>3.46</languageToolchainVersion>
+        <languageToolchainVersion>3.40</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>
