@@ -3,8 +3,11 @@
 
 #include <p18lf46k22.h>
 #include <delays.h>
-#include "affi.h"
-#include "boutons.h"
+#include "periph/affi.h"
+#include "periph/boutons.h"
+#include "periph/usart.h"
+#include "periph/1wire.h"
+#include "ftoa/ftoa.h"
 #include "xlcd.h"
 #include "TIMERS.h"
 #include "TIOS.h"

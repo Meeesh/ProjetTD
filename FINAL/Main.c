@@ -24,6 +24,8 @@
 //* VARIABLES GLOBALES *
 //**********************
 unsigned char rfid[10];     //utiliser dans la construction de la trame pour l'envoi de onnées au module RFID
+unsigned float temper;      //utiliser pour la lecture de la temperature
+unsigned volatile char affiLCD[15];     //variable temporaire pour afficher des valeurs au lcd
 
 //**************
 //* PROTOTYPES *
@@ -33,7 +35,7 @@ void rfidLect(char);
  * APPEL :  rfidLect([SECTEUR]);
  * Descr :  Envoi la demande de lecture au module RFID
  * INPUT :  [SECTEUR] : Numéro du secteur dont on souhaite en lire le contenu
- * OUTPUT:  NA
+ * OUTPUT:  N/A
  */
 void rfidEcri(char, char, char, char, char);
 /*
@@ -41,12 +43,23 @@ void rfidEcri(char, char, char, char, char);
  * Descr :  Envoi le demande d'écriture au module RFID
  * INPUT :  [SECTEUR] : Numéro du  secteur dans lequel on veut placer les données
  *          [DATAx]   : Octets a envoyer
- * OUPUT :  NA
+ * OUPUT :  N/A
  */
 void LiczCRC2(unsigned char *, unsigned short *, unsigned char);
 /*
  * Fcontion utiliser pour l'envoi de données au RFID, PAS UTILE POUR L'UTILISSATEUR !
  */
+void LectTEMP(void);
+/*
+ * APPEL : UNIQUEMENT pour le call back
+ * Descr : Lecture de la temperature via call back
+ * INPUT : N/A
+ * OUTPUT: N/A
+ */
+void AffiTemp(void);
+void afficherTempLCD(char);
+void ClignotLed(void);
+
 
 //****************** fonction principale *****************
 void main (void)
@@ -61,10 +74,11 @@ void main (void)
     ANSELC = NUM;
     ANSELD = NUM;
     ANSELE = NUM;
-    ANSELDbits.ANSD4 = ANA;
+    ANSELDbits.ANSD4 = ANA;     //photodiode
             //SELECTION IN/OUT		(TRIS)
-    TRISCbits.TRISC2 = OUT;
-    TRISBbits.TRISB4 = OUT;
+    TRISCbits.TRISC2 = OUT;     //LED en output
+    TRISBbits.TRISB4 = OUT;     //RELAIS en output
+    TRISDbits.TRISD4 = IN;      //photo diode en input
             //ETAT REPOS DES PINS 	(PORT)
     IO_LED = OFF;
     IO_REL = OFF;
@@ -80,6 +94,9 @@ void main (void)
     TIOSInitialiser();
 
     // Initialisation des Callbacks
+    TIOSEnregistrerCB_TIMER(&LectTEMP, 1000);       //lecture de la temperature tout les 1sec
+    TIOSEnregistrerCB_TIMER(&AffiTemp, 1000);       //affichage de la temperature
+    TIOSEnregistrerCB_TIMER(&ClignotLed, 1000);
 
     // Lancement OS (Boucle infinie)
     TIOSStart();
@@ -156,4 +173,21 @@ void LiczCRC2(unsigned char *ZAdr, unsigned short *DoAdr, unsigned char Ile)    
         else C=C<<1;
         *DoAdr=C^(*DoAdr<<8);
     }
+}
+
+void LectTEMP()
+{
+    temper = Read_Temperature();
+}
+
+void AffiTemp()
+{
+    ftoa(temper, &affiLCD, 2, 'F');
+    while(BusyXLCD());
+    putsXLCD(affiLCD);
+}
+
+void ClignotLed()
+{
+    IO_LED = !IO_LED;
 }

@@ -4,13 +4,19 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="f2" displayName="FTOA" projectFiles="true">
+        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/ftoa/ftoa.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="PERIPH" projectFiles="true">
+        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/1wire.h</itemPath>
+        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/affi.h</itemPath>
+        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/boutons.h</itemPath>
+        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/usart.h</itemPath>
+      </logicalFolder>
       <itemPath>TIMERS.h</itemPath>
       <itemPath>TIOS.h</itemPath>
-      <itemPath>affi.h</itemPath>
-      <itemPath>boutons.h</itemPath>
       <itemPath>head.h</itemPath>
       <itemPath>xlcd.h</itemPath>
-      <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/usart.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -19,6 +25,15 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f3" displayName="FTOA" projectFiles="true">
+        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/ftoa/ftoa.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="PERIPH" projectFiles="true">
+        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/1wire.c</itemPath>
+        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/affi.c</itemPath>
+        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/boutons.c</itemPath>
+        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/usart.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="f1" displayName="XLCD" projectFiles="true">
         <itemPath>XLCD/busyxlcd.c</itemPath>
         <itemPath>XLCD/openxlcd.c</itemPath>
@@ -33,10 +48,7 @@
       </logicalFolder>
       <itemPath>Main.c</itemPath>
       <itemPath>TIOS.c</itemPath>
-      <itemPath>affi.c</itemPath>
-      <itemPath>boutons.c</itemPath>
-      <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/TIMERS.c</itemPath>
-      <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/usart.c</itemPath>
+      <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/TIMERS.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -45,7 +57,7 @@
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
-    <Elem>.</Elem>
+    <Elem>C:\Users\Michael\Downloads\Ecole\TI 3\TDD\Projet\ProjetFinal.X</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

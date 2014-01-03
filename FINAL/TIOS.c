@@ -76,31 +76,31 @@ void TIOSRetirerCB_TIMER(unsigned char IDCB)
 // *************************************************************************
 void TIOSStart()
 {
-	unsigned char idx;
+    unsigned char idx;
 
- 	// Initialisation des interruptions, on autorise toutes les interruptions
-	// Pour les interruptions particuli�res, voir chaque fonction
-
-  
-	//Cr�ation, configuration et d�marrage de Timer1 pour g�n�rer une interruption toutes les mS en priorit� haute
- 	TIMER1_Init_1ms(); //A partir d'ici, interruption toutes les ms par Timer1
+    // Initialisation des interruptions, on autorise toutes les interruptions
+    // Pour les interruptions particuli�res, voir chaque fonction
 
 
- 	//Boucle principale de l'OS d'o� on ne sort jamais
-	 while(1)
- 	 {
-  		 // Check les conditions pour rappeler les fonctions li�es au temps 
-  		 for (idx = 0; idx < MAXCALLBACKCHRONO; idx++)
-    	 {
-	 		if (MaCB[idx]) //Si on a l'adresse d'une fonction CB � cet index
-     		//Si on est arriv� au nombre de mS demand�, on appelle la fonction 
-     		if (TickCB[idx] >= TempsCB[idx])
-      		{ 
-	  			 TickCB[idx] = 0;
-      			 MaCB[idx]();  //Rappel de la fonction enregistr�e!
-	 		}
-  		 }
-  	 }
+    //Cr�ation, configuration et d�marrage de Timer1 pour g�n�rer une interruption toutes les mS en priorit� haute
+    TIMER1_Init_1ms(); //A partir d'ici, interruption toutes les ms par Timer1
+
+
+    //Boucle principale de l'OS d'o� on ne sort jamais
+     while(1)
+     {
+             // Check les conditions pour rappeler les fonctions li�es au temps
+             for (idx = 0; idx < MAXCALLBACKCHRONO; idx++)
+     {
+                    if (MaCB[idx]) //Si on a l'adresse d'une fonction CB � cet index
+            //Si on est arriv� au nombre de mS demand�, on appelle la fonction
+            if (TickCB[idx] >= TempsCB[idx])
+            {
+                     TickCB[idx] = 0;
+                     MaCB[idx]();  //Rappel de la fonction enregistrée!
+            }
+    }
+     }
 }
 
 
@@ -113,10 +113,11 @@ void TIOSStart()
 // Code a placer en interruption prioritaire
 void HighInterrupt(void)
 {
-	// reconfiguration du Timer0
-	// Ajourner tous les ticks
-	unsigned char i;
-  	for (i = 0; i < MAXCALLBACKCHRONO; i++) TickCB[i]++;
+    unsigned char i;
+    TMR1H = 0xFE;
+    TMR1L = 0x0B;
+    
+    for (i = 0; i < MAXCALLBACKCHRONO; i++) TickCB[i]++;
 }
 	
 

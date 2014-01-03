@@ -1,9 +1,0 @@
-build/default/production/_ext/938151753/TIMERS.o:  \
-	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/TIMERS.c  \
-	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/xlcd.h  \
-	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/TIOS.h  \
-	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/head.h  \
-	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/affi.h  \
-	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/boutons.h  \
-	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/TIMERS.h  \
-

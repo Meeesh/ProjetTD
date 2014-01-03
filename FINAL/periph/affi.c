@@ -1,4 +1,4 @@
-#include "head.h"
+#include "../head.h"
 	//attention les trois premieres fonction ne peuvent pas se mettre dans se fichier mais dans le main (CTRL-X CTRL-V)
 	//ca fonctionne ???
 	void DelayFor18TCY(void)
