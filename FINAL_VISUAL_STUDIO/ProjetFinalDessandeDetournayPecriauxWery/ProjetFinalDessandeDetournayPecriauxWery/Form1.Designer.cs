@@ -33,7 +33,9 @@
             this.donneeTemperature = new System.Windows.Forms.Label();
             this.messageTemp = new System.Windows.Forms.Label();
             this.ethernet = new System.Windows.Forms.GroupBox();
+            this.pingGroup = new System.Windows.Forms.GroupBox();
             this.buttonPing = new System.Windows.Forms.Button();
+            this.detailsPing = new System.Windows.Forms.Label();
             this.messageIpClient = new System.Windows.Forms.Label();
             this.donneeIpClient = new System.Windows.Forms.Label();
             this.messageEtatClient = new System.Windows.Forms.Label();
@@ -45,18 +47,18 @@
             this.portSerie = new System.Windows.Forms.Label();
             this.messageSerie = new System.Windows.Forms.Label();
             this.serialPort = new System.IO.Ports.SerialPort(this.components);
-            this.detailsPing = new System.Windows.Forms.Label();
-            this.pingGroup = new System.Windows.Forms.GroupBox();
+            this.tableauTemperature = new System.Windows.Forms.TableLayoutPanel();
             this.temperature.SuspendLayout();
             this.ethernet.SuspendLayout();
+            this.pingGroup.SuspendLayout();
             this.lumiere.SuspendLayout();
             this.usart.SuspendLayout();
-            this.pingGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // temperature
             // 
             this.temperature.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.temperature.Controls.Add(this.tableauTemperature);
             this.temperature.Controls.Add(this.donneeTemperature);
             this.temperature.Controls.Add(this.messageTemp);
             this.temperature.Location = new System.Drawing.Point(6, 96);
@@ -104,6 +106,19 @@
             this.ethernet.TabStop = false;
             this.ethernet.Text = "Via Ethernet";
             // 
+            // pingGroup
+            // 
+            this.pingGroup.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.pingGroup.Controls.Add(this.buttonPing);
+            this.pingGroup.Controls.Add(this.detailsPing);
+            this.pingGroup.Location = new System.Drawing.Point(11, 279);
+            this.pingGroup.Name = "pingGroup";
+            this.pingGroup.Size = new System.Drawing.Size(456, 241);
+            this.pingGroup.TabIndex = 8;
+            this.pingGroup.TabStop = false;
+            this.pingGroup.Text = "Ping client";
+            this.pingGroup.Visible = false;
+            // 
             // buttonPing
             // 
             this.buttonPing.BackColor = System.Drawing.SystemColors.ButtonFace;
@@ -115,6 +130,16 @@
             this.buttonPing.Text = "Ping client";
             this.buttonPing.UseVisualStyleBackColor = false;
             this.buttonPing.Click += new System.EventHandler(this.buttonPing_Click);
+            // 
+            // detailsPing
+            // 
+            this.detailsPing.AutoSize = true;
+            this.detailsPing.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.detailsPing.Location = new System.Drawing.Point(15, 98);
+            this.detailsPing.Name = "detailsPing";
+            this.detailsPing.Size = new System.Drawing.Size(160, 25);
+            this.detailsPing.TabIndex = 7;
+            this.detailsPing.Text = "Details des pings";
             // 
             // messageIpClient
             // 
@@ -201,6 +226,7 @@
             this.usart.TabIndex = 3;
             this.usart.TabStop = false;
             this.usart.Text = "Via Usart";
+            this.usart.Visible = false;
             // 
             // portSerie
             // 
@@ -227,49 +253,44 @@
             this.serialPort.PortName = "COM4";
             this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.dataReceiveSerial);
             // 
-            // detailsPing
+            // tableauTemperature
             // 
-            this.detailsPing.AutoSize = true;
-            this.detailsPing.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.detailsPing.Location = new System.Drawing.Point(15, 98);
-            this.detailsPing.Name = "detailsPing";
-            this.detailsPing.Size = new System.Drawing.Size(160, 25);
-            this.detailsPing.TabIndex = 7;
-            this.detailsPing.Text = "Details des pings";
-            // 
-            // pingGroup
-            // 
-            this.pingGroup.BackColor = System.Drawing.Color.PaleTurquoise;
-            this.pingGroup.Controls.Add(this.buttonPing);
-            this.pingGroup.Controls.Add(this.detailsPing);
-            this.pingGroup.Location = new System.Drawing.Point(11, 279);
-            this.pingGroup.Name = "pingGroup";
-            this.pingGroup.Size = new System.Drawing.Size(456, 241);
-            this.pingGroup.TabIndex = 8;
-            this.pingGroup.TabStop = false;
-            this.pingGroup.Text = "Ping client";
-            this.pingGroup.Visible = false;
+            this.tableauTemperature.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableauTemperature.ColumnCount = 3;
+            this.tableauTemperature.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.28302F));
+            this.tableauTemperature.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.71698F));
+            this.tableauTemperature.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 123F));
+            this.tableauTemperature.Location = new System.Drawing.Point(25, 58);
+            this.tableauTemperature.Name = "tableauTemperature";
+            this.tableauTemperature.RowCount = 2;
+            this.tableauTemperature.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableauTemperature.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
+            this.tableauTemperature.Size = new System.Drawing.Size(402, 38);
+            this.tableauTemperature.TabIndex = 2;
             // 
             // ProjetFinal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Azure;
+            this.BackgroundImage = global::ProjetFinalDessandeDetournayPecriauxWery.Properties.Resources.rfidlogo;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(938, 550);
             this.Controls.Add(this.usart);
             this.Controls.Add(this.ethernet);
+            this.DoubleBuffered = true;
             this.Name = "ProjetFinal";
             this.Text = "ProjetTD Dessandé Detournay Pecriaux Wery";
             this.temperature.ResumeLayout(false);
             this.temperature.PerformLayout();
             this.ethernet.ResumeLayout(false);
             this.ethernet.PerformLayout();
+            this.pingGroup.ResumeLayout(false);
+            this.pingGroup.PerformLayout();
             this.lumiere.ResumeLayout(false);
             this.lumiere.PerformLayout();
             this.usart.ResumeLayout(false);
             this.usart.PerformLayout();
-            this.pingGroup.ResumeLayout(false);
-            this.pingGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -294,6 +315,7 @@
         private System.Windows.Forms.Button buttonPing;
         private System.Windows.Forms.GroupBox pingGroup;
         private System.Windows.Forms.Label detailsPing;
+        private System.Windows.Forms.TableLayoutPanel tableauTemperature;
     }
 }
 

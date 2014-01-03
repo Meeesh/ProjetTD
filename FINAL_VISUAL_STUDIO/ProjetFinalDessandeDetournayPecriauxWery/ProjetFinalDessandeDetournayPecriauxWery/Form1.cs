@@ -25,6 +25,11 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
         private delegate void ChangeEtatGroup(bool valeur); //Creation du delegate pour afficher ou non le group des Pings
         private delegate void ReceiveSerial(string str); //Creation du delegate pour le thread du serialport
         string ipclient = "";
+        float temperatureMax = float.MinValue;
+        float temperatureMin = float.MaxValue;
+        float temperatureTotal = 0;
+        int temperatureNbTemp = 0;
+        float temperatureMoyenne;
 
         public ProjetFinal()
         {
@@ -41,7 +46,14 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
             this.listenThread.Start();
         }
 
-        private void ChangeLabelText(string str) {donneeTemperature.Text = str;}
+        private void ChangeLabelText(string str) {
+            temperatureTotal += Single.Parse(str);
+            temperatureNbTemp++;
+            if (temperatureMin > Single.Parse(str)) temperatureMin = Single.Parse(str);
+            if (temperatureMax < Single.Parse(str)) temperatureMax = Single.Parse(str);
+            temperatureMoyenne = temperatureTotal / temperatureNbTemp;
+            donneeTemperature.Text = str;
+        }
         private void ChangeLabelLumiere(string str) {donneeLumiere.Text = str;}
         private void ChangeLabelPortSerie(string str) { portSerie.Text = str; }
         private void ChangeLabelEtatConnexion(string str) { messageEtatClient.Text = str; }
