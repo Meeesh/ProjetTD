@@ -19,6 +19,7 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
     public partial class ProjetFinal : Form
     {
         int compteurChoix = 0;
+        int compteurUsart = 0;
         private TcpListener tcpListener;
         private Thread listenThread;
         private delegate void ChangeLabelTcp(string str); //Creation du delegate pour le thread tcp
@@ -34,7 +35,7 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
         public ProjetFinal()
         {
             InitializeComponent();
-            //serialPort.Open();
+            serialPort.Open();
             Serveur();
         }
         //TCPServerEthernet.Server serveurTCP
@@ -49,13 +50,19 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
         private void ChangeLabelText(string str) {
             temperatureTotal += Single.Parse(str);
             temperatureNbTemp++;
+            temperatureMoyenne = temperatureTotal / temperatureNbTemp;
             if (temperatureMin > Single.Parse(str)) temperatureMin = Single.Parse(str);
             if (temperatureMax < Single.Parse(str)) temperatureMax = Single.Parse(str);
             temperatureMoyenne = temperatureTotal / temperatureNbTemp;
             donneeTemperature.Text = str;
+            donneeTempMax.Text = temperatureMax.ToString("R");
+            donneeTempMin.Text = temperatureMin.ToString("R");
+            donneeTempMoy.Text = temperatureMoyenne.ToString("R");
         }
         private void ChangeLabelLumiere(string str) {donneeLumiere.Text = str;}
         private void ChangeLabelPortSerie(string str) { portSerie.Text = str; }
+        private void ChangeLabelNumTel(string str) { donneeNumTel.Text = str; }
+        private void ChangeLabelStatut(string str) { affStatut.Text = str; }
         private void ChangeLabelEtatConnexion(string str) { messageEtatClient.Text = str; }
         private void ChangeLabelIPClient(string str) { donneeIpClient.Text = str; }
         private void ChangeEtatDuGroup(bool valeur) { pingGroup.Visible = valeur; }
@@ -126,7 +133,16 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
         private void dataReceiveSerial(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             string stringRead = serialPort.ReadExisting();
-            this.Invoke(new ReceiveSerial(ChangeLabelPortSerie), stringRead);
+            compteurUsart++;
+            if (compteurUsart == 1)
+                this.Invoke(new ReceiveSerial(ChangeLabelPortSerie), stringRead);
+            else if (compteurUsart == 2)
+                this.Invoke(new ReceiveSerial(ChangeLabelNumTel), stringRead);
+            else
+            {
+                this.Invoke(new ReceiveSerial(ChangeLabelStatut), stringRead);
+                compteurUsart = 0;
+            }
         }
 
         private void buttonPing_Click(object sender, EventArgs e)
@@ -163,6 +179,11 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
         }
 
         private void messageEtatClient_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ProjetFinal_Load(object sender, EventArgs e)
         {
 
         }
