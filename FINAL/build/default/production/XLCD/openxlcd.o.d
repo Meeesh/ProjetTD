@@ -1,12 +1,12 @@
 build/default/production/XLCD/openxlcd.o:  \
-	C:/Users/Michael/Downloads/Ecole/TI\ 3/TDD/Projet/ProjetFinal.X/XLCD/openxlcd.c  \
-	C:/Users/Michael/Downloads/Ecole/TI\ 3/TDD/Projet/ProjetFinal.X/periph/1wire.h  \
-	C:/Users/Michael/Downloads/Ecole/TI\ 3/TDD/Projet/ProjetFinal.X/ftoa/ftoa.h  \
-	C:/Users/Michael/Downloads/Ecole/TI\ 3/TDD/Projet/ProjetFinal.X/TIOS.h  \
-	C:/Users/Michael/Downloads/Ecole/TI\ 3/TDD/Projet/ProjetFinal.X/xlcd.h  \
-	C:/Users/Michael/Downloads/Ecole/TI\ 3/TDD/Projet/ProjetFinal.X/head.h  \
-	C:/Users/Michael/Downloads/Ecole/TI\ 3/TDD/Projet/ProjetFinal.X/periph/affi.h  \
-	C:/Users/Michael/Downloads/Ecole/TI\ 3/TDD/Projet/ProjetFinal.X/periph/boutons.h  \
-	C:/Users/Michael/Downloads/Ecole/TI\ 3/TDD/Projet/ProjetFinal.X/periph/usart.h  \
-	C:/Users/Michael/Downloads/Ecole/TI\ 3/TDD/Projet/ProjetFinal.X/TIMERS.h  \
+	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/XLCD/openxlcd.c  \
+	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/periph/1wire.h  \
+	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/ftoa/ftoa.h  \
+	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/TIOS.h  \
+	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/xlcd.h  \
+	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/head.h  \
+	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/periph/affi.h  \
+	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/periph/boutons.h  \
+	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/periph/usart.h  \
+	D:/Users/Michael/TI\ 3/Traitement\ des\ donnees/ProjetComplet.X/TIMERS.h  \
 

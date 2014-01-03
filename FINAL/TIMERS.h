@@ -6,7 +6,7 @@
 
 
 //DEFINE
-
+#define INT_TMR1 PIR1bits.TMR1IF
 
 //PROTOTYPE FONCTIONS EXTERNES
 //Cr�ation, configuration et d�marrage de Timer1 pour g�n�rer une interruption toutes les mS en priorit� haute

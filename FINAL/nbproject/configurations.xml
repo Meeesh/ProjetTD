@@ -5,13 +5,13 @@
                    displayName="Header Files"
                    projectFiles="true">
       <logicalFolder name="f2" displayName="FTOA" projectFiles="true">
-        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/ftoa/ftoa.h</itemPath>
+        <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/ftoa/ftoa.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="PERIPH" projectFiles="true">
-        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/1wire.h</itemPath>
-        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/affi.h</itemPath>
-        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/boutons.h</itemPath>
-        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/usart.h</itemPath>
+        <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/periph/1wire.h</itemPath>
+        <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/periph/affi.h</itemPath>
+        <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/periph/boutons.h</itemPath>
+        <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/periph/usart.h</itemPath>
       </logicalFolder>
       <itemPath>TIMERS.h</itemPath>
       <itemPath>TIOS.h</itemPath>
@@ -26,13 +26,13 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f3" displayName="FTOA" projectFiles="true">
-        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/ftoa/ftoa.c</itemPath>
+        <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/ftoa/ftoa.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="PERIPH" projectFiles="true">
-        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/1wire.c</itemPath>
-        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/affi.c</itemPath>
-        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/boutons.c</itemPath>
-        <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/periph/usart.c</itemPath>
+        <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/periph/1wire.c</itemPath>
+        <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/periph/affi.c</itemPath>
+        <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/periph/boutons.c</itemPath>
+        <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/periph/usart.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="XLCD" projectFiles="true">
         <itemPath>XLCD/busyxlcd.c</itemPath>
@@ -48,7 +48,7 @@
       </logicalFolder>
       <itemPath>Main.c</itemPath>
       <itemPath>TIOS.c</itemPath>
-      <itemPath>C:/Users/Michael/Downloads/Ecole/TI 3/TDD/Projet/ProjetFinal.X/TIMERS.c</itemPath>
+      <itemPath>D:/Users/Michael/TI 3/Traitement des donnees/ProjetComplet.X/TIMERS.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -58,6 +58,8 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>C:\Users\Michael\Downloads\Ecole\TI 3\TDD\Projet\ProjetFinal.X</Elem>
+    <Elem>D:\Users\Michael\TI 3\Traitement des donnees\ProjetComplet.X\periph</Elem>
+    <Elem>D:\Users\Michael\TI 3\Traitement des donnees\ProjetComplet.X\ftoa</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

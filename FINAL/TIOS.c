@@ -116,7 +116,8 @@ void HighInterrupt(void)
     unsigned char i;
     TMR1H = 0xFE;
     TMR1L = 0x0B;
-    
+    INT_TMR1 = 0;
+
     for (i = 0; i < MAXCALLBACKCHRONO; i++) TickCB[i]++;
 }
 	
@@ -125,7 +126,4 @@ void HighInterrupt(void)
 void LowInterrupt(void)
 {
 
-}	
-
-
-
+}

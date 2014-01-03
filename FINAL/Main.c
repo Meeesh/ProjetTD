@@ -94,9 +94,9 @@ void main (void)
     TIOSInitialiser();
 
     // Initialisation des Callbacks
-    TIOSEnregistrerCB_TIMER(&LectTEMP, 1000);       //lecture de la temperature tout les 1sec
-    TIOSEnregistrerCB_TIMER(&AffiTemp, 1000);       //affichage de la temperature
-    TIOSEnregistrerCB_TIMER(&ClignotLed, 1000);
+    TIOSEnregistrerCB_TIMER(&LectTEMP, 2000);       //lecture de la temperature tout les 1sec
+    TIOSEnregistrerCB_TIMER(&AffiTemp, 2000);       //affichage de la temperature
+    TIOSEnregistrerCB_TIMER(&ClignotLed, 2000);
 
     // Lancement OS (Boucle infinie)
     TIOSStart();
@@ -184,10 +184,15 @@ void AffiTemp()
 {
     ftoa(temper, &affiLCD, 2, 'F');
     while(BusyXLCD());
+    SetDDRamAddr(0x40);
+    while(BusyXLCD());
     putsXLCD(affiLCD);
 }
 
 void ClignotLed()
 {
-    IO_LED = !IO_LED;
+    if(IO_LED == ON)
+        IO_LED = OFF;
+    else
+        IO_LED = ON;
 }
