@@ -47,6 +47,7 @@ BOOL connectTCP=FALSE;
 WORD verifPut=0;
 WORD verifGet=0;
 char messageLCD[16] = "Ethernet";
+unsigned char afficheConnected = 0;
 //char messageLCD[16] = "Initialisation..";
 
 //FONCTIONS INTERNES
@@ -116,6 +117,11 @@ void main()
     ANSELD = 0;
     ANSELE = 0;
 
+    //GEIE PIE IPEN
+    INTCONbits.GIE = 1;
+    INTCONbits.PEIE = 1;
+    RCONbits.IPEN = 1;
+
     TRISCbits.TRISC2 = 0;
     PORTCbits.RC2 = 0;
 
@@ -141,8 +147,8 @@ void main()
 
 //    MonSocket = TCPOpen((DWORD)0xC80A650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //Ouverture d'un nouveau socket CLIENT ici TCP sur une certaine IP : 10.101.10.200
 //    MonSocket = TCPOpen((DWORD)0x4501A8C0,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //ICI 192.168.1.69
-//    MonSocket = TCPOpen((DWORD)0xB00B650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //ICI 10.101.11.179
-    MonSocket = TCPOpen(0,TCP_OPEN_SERVER,45684,TCP_PURPOSE_DEFAULT); //ICI 10.101.11.179
+    MonSocket = TCPOpen((DWORD)0xB00B650A,TCP_OPEN_IP_ADDRESS,45684,TCP_PURPOSE_DEFAULT); //ICI 10.101.11.176
+//    MonSocket = TCPOpen(0,TCP_OPEN_SERVER,45684,TCP_PURPOSE_DEFAULT); //ICI 10.101.11.179
     if(MonSocket == INVALID_SOCKET){
         while(BusyXLCD());
         putrsXLCD(" CLOSED");
@@ -164,9 +170,15 @@ void main()
 
         connectTCP = TCPIsConnected(MonSocket); //Vérifie si on a une connexion établie avec le noeud suivant
         if(connectTCP == TRUE){
-            while(BusyXLCD());
-            putrsXLCD("CONNECTED SENDING");
-            while(BusyXLCD());
+
+            if(afficheConnected == 0)
+            {
+                afficheConnected = 1;
+                PORTCbits.RC2 = 0; // Si la LED s'éteint, c'est que l'ethernet est en cours de connexion
+                while(BusyXLCD());
+                putrsXLCD("SENDING");
+                while(BusyXLCD());
+            }
 //            verifPut = TCPIsPutReady(MonSocket); //Vérifie si le buffer d'envoi est OK. Si renvoie 0 il faut essayer de nettoyer avant
 //            while(verifPut == 0){
 //                StackTask();
@@ -175,12 +187,10 @@ void main()
 //            }
 //            TCPPutArray(MonSocket, DonneEnvoi, 12);
         }else{
-            PORTCbits.RC2 = 1; // Si la LED clignote c'est que l'ethernet est en cours de connexion
+            PORTCbits.RC2 = 1; // Si la LED est allumée, c'est que l'ethernet est en cours de connexion
         }
         //Delay10KTCYx(200);
         //TCPClose(MonSocket);
-        
-        PORTCbits.RC2 = 0; // Si la LED clignote c'est que l'ethernet est en cours de connexion
     }
 }
 
@@ -193,7 +203,10 @@ void HAUTEPRIORITEInterrupt(void)
 #pragma interrupt BASSEPRIORITEInterrupt
 void BASSEPRIORITEInterrupt(void)
 {
-    TickUpdate();
+    if(INTCONbits.TMR0IF == 1){
+        TickUpdate();
+        INTCONbits.TMR0IF = 0;
+    }
 }
 
 void DelayFor18TCY(void){
