@@ -1,0 +1,21 @@
+\BOOKMARK [0][]{chapter.1}{Introduction}{}% 1
+\BOOKMARK [1][]{section.1.1}{Participants}{chapter.1}% 2
+\BOOKMARK [1][]{section.1.2}{Description du projet}{chapter.1}% 3
+\BOOKMARK [0][]{chapter.2}{Explication des logiciel}{}% 4
+\BOOKMARK [1][]{section.2.1}{Description du logiciel C\043}{chapter.2}% 5
+\BOOKMARK [2][]{subsection.2.1.1}{Introduction}{section.2.1}% 6
+\BOOKMARK [2][]{subsection.2.1.2}{Connexion}{section.2.1}% 7
+\BOOKMARK [2][]{subsection.2.1.3}{Structure du logiciel}{section.2.1}% 8
+\BOOKMARK [2][]{subsection.2.1.4}{Diff\351rentes fonctionnalit\351s}{section.2.1}% 9
+\BOOKMARK [3][]{section*.2}{Donn\351es Ethernet :}{subsection.2.1.4}% 10
+\BOOKMARK [4][]{section*.3}{Temp\351rature :}{section*.2}% 11
+\BOOKMARK [4][]{section*.4}{Luminosit\351 :}{section*.2}% 12
+\BOOKMARK [4][]{section*.5}{Client :}{section*.2}% 13
+\BOOKMARK [4][]{section*.6}{Cr\351ation de carte :}{section*.2}% 14
+\BOOKMARK [4][]{section*.7}{Ping :}{section*.2}% 15
+\BOOKMARK [4][]{section*.8}{Erreur socket :}{section*.2}% 16
+\BOOKMARK [1][]{section.2.2}{Description du logiciel C}{chapter.2}% 17
+\BOOKMARK [2][]{subsection.2.2.1}{Introduction}{section.2.2}% 18
+\BOOKMARK [2][]{subsection.2.2.2}{Ethernet}{section.2.2}% 19
+\BOOKMARK [2][]{subsection.2.2.3}{Usart}{section.2.2}% 20
+\BOOKMARK [2][]{subsection.2.2.4}{RFID}{section.2.2}% 21
