@@ -29,7 +29,7 @@ pdfsubject={Fonctionnement du projet} %sous Acrobat.
 }
 
 \author{\href{mailto:alex.4492@gmail.com}{Dessandé Alexandre},\href{mailto:jeje.det@gmail.com}{Detournay Jérôme}, \href{mailto:pecriaux.thomas.01@henallux.be}{Pecriaux Thomas}, \href{mailto:wery.michael@gmail.com}{Wery Michael}}
-\title{\texttt{\textbf{Laboratoire de transmission de signal : \\Manuel d'utilisateur}}}
+\title{\texttt{\textbf{Laboratoire de transmission de données : \\Manuel d'utilisateur}}}
 
 \begin{document}
 
@@ -104,8 +104,7 @@ literate=
 			\item Connecter la carte en usb au pc
 			\item Ouvrir le serial Bootloader AN131
 			\item Choisir dans setting le bon port com et mettre le Baud Rate à 9600
-			\item Appuyer sur le bouton reset de votre et carte et de suite après sur le bouton stop 
-			du programme Bootloader
+			\item Appuyer sur le bouton reset de votre et carte et de suite après sur le bouton de fermeture du programme Bootloader
 			\item Ouvrez le fichier \verb+.hex+ et écrivez le
 			\item Lancez le programme et fermé la fenêtre du logiciel Bootloader
 			\item Bravo le logiciel est installé :)
@@ -120,15 +119,22 @@ literate=
 	\section{Démarrage}
 		\begin{enumerate}
 			\item Lancez le programme \verb+.exe+
-			\item Passer votre carte à puce sur le module RFID
-			\item Vous devez maintenant être authentifiez
+			\item Passer votre carte à puce sur le module RFID et appuyez sur le bouton central
+			\item L'id d'utilisateur s'affiche sur le LCD 
+			\item Vous devez maintenant être authentifiez 
 			\item Toutes les données devraient se mettre à jour automatiquement
 		\end{enumerate}
+		Problème pouvant intervenir : 
+		\begin{enumerate}
+			\item Carte non détecté : Un message apparait sur le LCD "Pas de carte". Veuillez recommencer l'opération.
+			\item Utilisateur sans droit : Si vous n'avez pas droit à l'accès un message s'affichera à l'écran de l'ordinateur. Les utilisateurs par défauts en autorisés sont "TOTO, TATA, TITI".
+		\end{enumerate}
+		
 	\section{Utilisation du logiciel}
 		\subsection{Ping}
-			Vous avez l'occasion grâce au bouton ping de pouvoir vérifier la connectivité avec la carte.
+			Vous avez l'occasion grâce au bouton ping de pouvoir vérifier la connectivité avec la carte. 
 		\subsection{Mise de donner sur la carte à puce RFID}
-			Dans la box formulaire vous pouvez mettre un ID et l'envoyer sur la carte préalablement mise sur le module RFID.
+			Dans la box formulaire vous pouvez mettre un ID et l'envoyer sur la carte préalablement mise sur le module RFID. Si l'écriture ce passe bien, il sera mis sur le LCD "écriture ok".
 		\subsection{Données visibles}
 			Le logiciel vous permet de voir différents paramètre :
 			\begin{itemize}
