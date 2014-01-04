@@ -29,7 +29,7 @@ pdfsubject={Fonctionnement du projet} %sous Acrobat.
 }
 
 \author{\href{mailto:alex.4492@gmail.com}{Dessandé Alexandre},\href{mailto:jeje.det@gmail.com}{Detournay Jérôme}, \href{mailto:pecriaux.thomas.01@henallux.be}{Pecriaux Thomas}, \href{mailto:wery.michael@gmail.com}{Wery Michael}}
-\title{\texttt{\textbf{Laboratoire de transmission de signal}}}
+\title{\texttt{\textbf{Laboratoire de transmission de signal : \\Fonctionnement du projet}}}
 
 \begin{document}
 
@@ -130,7 +130,7 @@ literate=
 		Lors de l'ouverture du logiciel une fenêtre d'authentification s'ouvre, celle-ci  vous demande de passer votre carte RFID pour vous logguer au programme. Ceci fait vous arrivez sur la page principale du logiciel.
 		\subsection{Structure du logiciel}
 		\begin{center}
-		\includegraphics[scale=0.6]{ImageElec.jpg}
+		\includegraphics[scale=0.8]{ImageElec.jpg}
 		\end{center}
 		
 		
@@ -155,15 +155,26 @@ literate=
 			Si la carte est éteint le bouton renverrai un "Time Out"
 			\paragraph{Erreur socket:} Lorsque l'on le câble Ethernet est retiré le programme nous sort une erreur.
 	
-	\section{Description du logiciel C}
-	Nous parlons ici notre application \verb+C+ mis en place sur notre système embarqué.  
+	\section{Description du logiciel C} 
 		\subsection{Introduction}
+		Nous parlons ici notre application \verb+C+ mis en place sur notre système embarqué. 
 		\subsection{Ethernet}
-		\subsection{Usart}
-		\subsection{RFID}
+		Nous utilisons ici la carte comme un client TCP pour envoyer les données de température et luminosité en permanence au pc. 
+		\subsection{Usart-RFID}
+		L'usart nous permettra d'envoyer et récupérer des données sur le logiciel \verb+C#+. Nous avons décider de coupler cette fonctionnalité avec le RFID. Nous pouvons ainsi récupérer les données d'une carte RFID pour authentifier le client sur le programme. Nous pouvons aussi 
+		\subsection{tios.c}
+		Dans le fichier TIOS s'y trouve toute la partie gestion des interruptions et appel des fonctions en conséquence.
+ 
+Certaines fonction sont appellé periodiquement grace au tableau MaCB qui est parcourut et appel les fonctions quand leurs temsp est arrivée.
+ 
+D'autres fonctions ne necessitent pas d'être appellée periodiquement, en conséquence, nous avons besoin d'autres variables pour enregistrer les pointeurs de fonction, cerataines de ces fonctions
+ont des arguments ou des retours donc nous devons adapter les variables pointant vers le fonction pour gèrer ces arguments et retours lors de leurs appel.
+ 
+Il n'est pas possible d'utiliser un tableau de pointeurs pour ces variables car leurs retour ou arguments varient d'un a l'autre et donc automatiser les appel n'est pas possible.
+ 
+Les interruptions initialisent des drapeaux pour savoir qu'elle appel non periodique doivent être appelé. Elles sont donc appeller en fonction des drapeaux dans la boucle principale [CODE]while(1)[/CODE].
+ 
+Toutes ses fonctions appelé se trouvent dans le fichier "Main.c" et sont donc accessible a la modification par l'utilisateur voulant créer un programme utilisant notre TIOS.c
 	
-			\begin{lstlisting}
-
-			\end{lstlisting}
 
 \end{document}

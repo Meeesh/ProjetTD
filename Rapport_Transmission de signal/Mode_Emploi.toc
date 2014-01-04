@@ -1,0 +1,11 @@
+\select@language {french}
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}
+\contentsline {section}{\numberline {1.1}Mat\IeC {\'e}riels et logiciels n\IeC {\'e}cessaires}{2}{section.1.1}
+\contentsline {section}{\numberline {1.2}Installation du logiciel C sur la carte}{2}{section.1.2}
+\contentsline {chapter}{\numberline {2}Utilisation du logiciel C\#}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}Configuration de vos param\IeC {\`e}tres ip local}{3}{section.2.1}
+\contentsline {section}{\numberline {2.2}D\IeC {\'e}marrage}{3}{section.2.2}
+\contentsline {section}{\numberline {2.3}Utilisation du logiciel}{3}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Ping}{3}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Mise de donner sur la carte \IeC {\`a} puce RFID}{3}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}Donn\IeC {\'e}es visibles}{3}{subsection.2.3.3}
