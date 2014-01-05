@@ -26,20 +26,24 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
         private delegate void ChangeEtatGroup(bool valeur); //Creation du delegate pour afficher ou non le group des Pings
         private delegate void ReceiveSerial(string str); //Creation du delegate pour le thread du serialport
         string ipclient = "";
-        float temperatureMax = float.MinValue;
+        string[] listePorts;
+        /*float temperatureMax = float.MinValue;
         float temperatureMin = float.MaxValue;
         float temperatureTotal = 0;
         int temperatureNbTemp = 0;
         float temperatureMoyenne;
-
+        */
         public ProjetFinal()
         {
             InitializeComponent();
-            serialPort.Open();
+            initialiseComboBoxSerial();
             Serveur();
         }
         //TCPServerEthernet.Server serveurTCP
-
+        public void initialiseComboBoxSerial(){
+            listePorts = System.IO.Ports.SerialPort.GetPortNames();
+            choixPortSerial.DataSource = listePorts;
+        }
         public void Serveur(){
             //this.tcpListener = new TcpListener(IPAddress.Any, 3000);
             this.tcpListener = new TcpListener(IPAddress.Any, 45684);
@@ -61,11 +65,10 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
         }
         private void ChangeLabelLumiere(string str) {donneeLumiere.Text = str;}
         private void ChangeLabelPortSerie(string str) { portSerie.Text = str; }
-        private void ChangeLabelNumTel(string str) { donneeNumTel.Text = str; }
-        private void ChangeLabelStatut(string str) { affStatut.Text = str; }
         private void ChangeLabelEtatConnexion(string str) { messageEtatClient.Text = str; }
         private void ChangeLabelIPClient(string str) { donneeIpClient.Text = str; }
         private void ChangeEtatDuGroup(bool valeur) { pingGroup.Visible = valeur; }
+        private void ChangeEtatGroupAll(bool valeur) { ethernet.Visible = valeur; usart.Visible = valeur; }
 
         private void ListenForClients()
         {
@@ -134,6 +137,7 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
         {
             string stringRead = serialPort.ReadExisting();
             compteurUsart++;
+            /*
             if (compteurUsart == 1)
                 this.Invoke(new ReceiveSerial(ChangeLabelPortSerie), stringRead);
             else if (compteurUsart == 2)
@@ -142,6 +146,15 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
             {
                 this.Invoke(new ReceiveSerial(ChangeLabelStatut), stringRead);
                 compteurUsart = 0;
+            }
+            */
+            this.Invoke(new ReceiveSerial(ChangeLabelPortSerie), stringRead);
+            if (stringRead == "TATA" || stringRead == "TITI" || stringRead == "TOTO")
+                this.Invoke(new ChangeEtatGroup(ChangeEtatGroupAll), true);
+            else
+            {
+                this.Invoke(new ChangeEtatGroup(ChangeEtatGroupAll), false);
+                MessageBox.Show("Mauvais utilisateur !");
             }
         }
 
@@ -191,6 +204,51 @@ namespace ProjetFinalDessandeDetournayPecriauxWery
         private void buttonEnvoyer_Click(object sender, EventArgs e)
         {
             serialPort.Write(textID.Text + "\0");
+        }
+
+        private void buttonDeconnexion_Click(object sender, EventArgs e)
+        {
+            ethernet.Visible = false;
+            usart.Visible = false;
+        }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            Environment.Exit(0);
+        }
+
+        private void buttonChoixPort_Click(object sender, EventArgs e)
+        {
+            if (serialPort.IsOpen)
+                serialPort.Close();
+            if (choixPortSerial.SelectedIndex > -1)
+            {
+                serialPort.PortName = (string)choixPortSerial.SelectedItem;
+                portSelectionne.Text = serialPort.PortName;
+                portSelectionne.Visible = true;
+                try
+                {
+                    serialPort.Open();
+                    this.BackgroundImage = ProjetFinalDessandeDetournayPecriauxWery.Properties.Resources.rfidlogo;
+                }
+                catch (InvalidOperationException)
+                {
+                    MessageBox.Show("Opération invalide !");
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    MessageBox.Show("Accès non autorisé\nVérifier si le bootloader est ouvert !");
+                }
+                catch (System.IO.IOException)
+                {
+                    MessageBox.Show("Port non reconnu\nEn choisir un autre");
+                }
+            }
+            else {
+                MessageBox.Show("Veuillez Selectionner un port COM");
+            }
+            listePorts = System.IO.Ports.SerialPort.GetPortNames();
+            choixPortSerial.DataSource = listePorts;
         }
     }
 }
